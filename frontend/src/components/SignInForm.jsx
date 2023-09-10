@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import {
-  FacebookLoginButton,
-  GoogleLoginButton,
-  InstagramLoginButton
+  
+  GoogleLoginButton
 } from "react-social-login-buttons";
 import React from 'react';
 import "../App.css";
@@ -91,7 +90,7 @@ export default function SignInForm() {
 
           <div className="socialMediaButtons">
             <div className="facebookButton">
-              <GoogleLoginButton onClick={() => alert("Hello")} />
+              <GoogleLoginButton onClick={() => alert("Google auth")} />
             </div>
           </div>
         </form>
