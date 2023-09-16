@@ -19,12 +19,14 @@ export default function Home(){
       //Pegando a lista TOTAL
       let list = await Tmdb.getHomeList();  
       setMovieList(list);
+      
 
       //Pegando o Filme em Destaque
       let originals = list.filter(i=>i.slug === 'originals');
-      let randomChosen = Math.floor(Math.random() * (originals[0].items.results.length -1));
-      let chosen = originals[0].items.results[randomChosen];
-      let chosenInfo = await Tmdb.getMovierInfo(chosen.id, 'tv');
+      let trending = list.filter(i=>i.slug === 'trending');
+      let randomChosen = Math.floor(Math.random() * (trending[0].items.results.length -1));
+      let chosen = trending[0].items.results[randomChosen];
+      let chosenInfo = await Tmdb.getMovierInfo(chosen.id, 'movie');
       setfeatureData(chosenInfo);
 
     }
@@ -69,7 +71,7 @@ export default function Home(){
 
       {movieList.length <= 0 &&
       <div className="loading">
-        <img src="https://media.filmelier.com/noticias/br/2020/03/Netflix_LoadTime.gif" alt="" />
+        <img src="https://media.filmelier.com/noticias/br/2020/03/Netflix_LoadTime.gif" alt="Loading..." />
       </div>
       }
 

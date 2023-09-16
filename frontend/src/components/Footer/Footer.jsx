@@ -1,10 +1,12 @@
 import React from 'react';
 import './Footer.css';
-
+import logo from "../../assets/logo2.png";
 export default function Footer () {
     return (
         <footer>
-            Copyright @2023
+            <img src={logo} alt="logo"/>
+          
+            
         </footer>
     )
 }

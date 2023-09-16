@@ -4,3 +4,7 @@ footer {
     margin: 0 auto;
     background: #141414;
 }
+
+footer img{
+    height: 120px;
+}
