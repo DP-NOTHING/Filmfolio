@@ -16,23 +16,41 @@ export default function Home() {
 		setMovieSwitch(!movieSwitch);
 	};
 	useEffect(() => {
-		const loadAll = async () => {
+		const loadAllMovies = async () => {
+			console.log('hello');
+			// console.log(movieSwitch);
 			//Pegando a lista TOTAL
-			let list = await Tmdb.getHomeList();
+			let list = await Tmdb.getMovieHomeList();
 			setMovieList(list);
-
 			//Pegando o Filme em Destaque
-			let originals = list.filter((i) => i.slug === 'originals');
+			// let originals = list.filter((i) => i.slug === 'originals');
 			let trending = list.filter((i) => i.slug === 'trending');
 			let randomChosen = Math.floor(
 				Math.random() * (trending[0].items.results.length - 1)
 			);
 			let chosen = trending[0].items.results[randomChosen];
-			let chosenInfo = await Tmdb.getMovierInfo(chosen.id, 'movie');
+			let chosenInfo = await Tmdb.getMovieInfo(chosen.id, 'movie');
 			setfeatureData(chosenInfo);
 		};
-
-		loadAll();
+		const loadAllTvShows = async () => {
+			// setMovieList([]);
+			let list = await Tmdb.getTvShowList();
+			// console.log(list);
+			setMovieList(list);
+			let trending = list.filter((i) => i.slug === 'trending');
+			let randomChosen = Math.floor(
+				Math.random() * (trending[0].items.results.length - 1)
+			);
+			let chosen = trending[0].items.results[randomChosen];
+			let chosenInfo = await Tmdb.getMovieInfo(chosen.id, 'tv');
+			// console.log(chosenInfo);
+			setfeatureData(chosenInfo);
+		};
+		if (movieSwitch == true) {
+			loadAllMovies();
+		} else {
+			loadAllTvShows();
+		}
 	}, [movieSwitch]);
 
 	useEffect(() => {
@@ -62,13 +80,14 @@ export default function Home() {
 			{featureData && <FeatureMovie item={featureData} />}
 
 			<section className='lists'>
-				{movieList.map((item, key) => (
-					<MovieRow
-						key={key}
-						title={item.title}
-						items={item.items}
-					/>
-				))}
+				{movieList.length &&
+					movieList.map((item, key) => (
+						<MovieRow
+							key={key}
+							title={item.title}
+							items={item.items}
+						/>
+					))}
 			</section>
 
 			{/* <Footer /> */}

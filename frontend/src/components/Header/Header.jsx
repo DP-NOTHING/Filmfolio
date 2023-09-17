@@ -3,7 +3,7 @@ import './Header.css';
 import logo from '../../assets/logo2.png';
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
-
+import SearchBar from '../SearchBar/SearchBar';
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 	width: 70,
 	height: 32,
@@ -62,6 +62,7 @@ export default function Header({ black, movieSwitch, movieSwitchHandler }) {
 			</div>
 			<MaterialUISwitch onChange={() => movieSwitchHandler()} />
 			{movieSwitch == true ? <span>movie</span> : <span>tv shows</span>}
+			<SearchBar />
 			<div className='header--user'>
 				<a href='/user'>
 					<img
