@@ -2,9 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './RoWItem.css';
 export default function RowItem(props) {
-	function fun() {
-		console.log('hovered on item');
-		//    Navigate("/",state[]);
+	function fun(e) {
+		props.hoverHandler(props.info);
 	}
 	const Navigate = useNavigate();
 	return (
@@ -24,7 +23,7 @@ export default function RowItem(props) {
 		>
 			{/* <div  style={{borderRadius:"18px"}}> */}
 			<img
-				src={props.src}
+				src={props.src ? props.src : null}
 				alt={props.alt}
 				style={{ borderRadius: '18px' }}
 			/>

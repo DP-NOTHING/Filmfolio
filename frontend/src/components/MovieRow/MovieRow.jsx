@@ -4,9 +4,8 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import RowItem from '../RowItem/RowItem';
 
-export default function MovieRow({ title, items }) {
+export default function MovieRow({ title, items, hoverHandler }) {
 	const [scrollX, setScrollX] = useState(0);
-
 	const handleLeftArrow = () => {
 		let x = scrollX + Math.round(window.innerWidth / 2);
 		if (x > 0) {
@@ -24,8 +23,26 @@ export default function MovieRow({ title, items }) {
 		setScrollX(x);
 	};
 	const handleScroll = (event) => {
-		setScrollX(scrollX - event.deltaX);
+		// Check if deltaX or deltaY is positive/negative to determine the scroll direction
+		const isScrollingLeft = event.deltaX < 0 || event.deltaY < 0;
+		const isScrollingRight = event.deltaX > 0 || event.deltaY > 0;
+
+		if (isScrollingLeft) {
+			let x = scrollX + Math.round(window.innerWidth / 2);
+			// Clamp the left scroll to prevent going out of range
+			x = Math.min(x, 0);
+			setScrollX(x);
+		} else if (isScrollingRight) {
+			let x = scrollX - Math.round(window.innerWidth / 2);
+			let listW = items.results.length * 122;
+			// Clamp the right scroll to prevent going out of range
+			x = Math.max(x, window.innerWidth - listW - 60);
+			setScrollX(x);
+		}
 	};
+	// const handleScroll = (event) => {
+	// 	setScrollX(scrollX - event.deltaX);
+	// };
 
 	return (
 		<div
@@ -69,11 +86,20 @@ export default function MovieRow({ title, items }) {
 							<RowItem
 								// changing id value from key to item.id
 								// info for now contains the whole item object
+								hoverHandler={hoverHandler}
 								info={item}
 								id={item.id}
 								key={key}
-								src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}
-								alt={item.original_title}
+								src={
+									item.poster_path
+										? `https://image.tmdb.org/t/p/w300${item.poster_path}`
+										: null
+								}
+								alt={
+									item.original_title
+										? item.original_title
+										: item.name
+								}
 							/>
 							// </div>
 						))}

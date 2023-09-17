@@ -6,21 +6,35 @@ import MovieRow from './MovieRow/MovieRow';
 import FeatureMovie from './FeaturedMovie/FeatureMovie';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
-
 export default function Home() {
+	// const [query, setQuery] = useState('');
+	const [hoveredItem, setHoveredItem] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+	const [searchResult, setSearchResult] = useState([]);
+	const [search, setSearch] = useState(false);
 	const [movieList, setMovieList] = useState([]);
 	const [featureData, setfeatureData] = useState(null);
 	const [blackHeader, setBlackHeader] = useState(false);
 	const [movieSwitch, setMovieSwitch] = useState(true); // for switching movie and tv shows page
+	const hoverHandler = (item) => {
+		setHoveredItem(item);
+	};
 	const movieSwitchHandler = () => {
 		setMovieSwitch(!movieSwitch);
+		setIsLoading(true);
+	};
+	const searchHandler = (setOrReset) => setSearch(setOrReset);
+	const queryHandler = (data) => {
+		console.log([data]);
+		setSearchResult([data]);
 	};
 	useEffect(() => {
 		const loadAllMovies = async () => {
-			console.log('hello');
+			// console.log('hello');
 			// console.log(movieSwitch);
 			//Pegando a lista TOTAL
 			let list = await Tmdb.getMovieHomeList();
+			console.log(list, '###############################');
 			setMovieList(list);
 			//Pegando o Filme em Destaque
 			// let originals = list.filter((i) => i.slug === 'originals');
@@ -46,11 +60,19 @@ export default function Home() {
 			// console.log(chosenInfo);
 			setfeatureData(chosenInfo);
 		};
+		// const loadSearchResults = async () => {
+		// 	// const data = await Tmdb.getSearchResults(query);
+		// 	// console.log(data);
+		// };
 		if (movieSwitch == true) {
 			loadAllMovies();
 		} else {
-			loadAllTvShows();
+			loadAllTvShows().then(() => setIsLoading(false));
 		}
+		// if (search == true) {
+		// 	loadSearchResults();
+		// }
+		// return () => clearInterval(id);
 	}, [movieSwitch]);
 
 	useEffect(() => {
@@ -72,17 +94,31 @@ export default function Home() {
 	return (
 		<div className='page'>
 			<Header
+				searchHandler={searchHandler}
+				queryHandler={queryHandler}
 				black={blackHeader}
+				// setLoading={setIsLoading}
 				movieSwitch={movieSwitch}
 				movieSwitchHandler={movieSwitchHandler}
 			/>
-
-			{featureData && <FeatureMovie item={featureData} />}
-
+			{!hoveredItem && featureData && <FeatureMovie item={featureData} />}
+			{hoveredItem && <FeatureMovie item={hoveredItem} />}
 			<section className='lists'>
-				{movieList.length &&
+				{!search &&
+					movieList.length &&
 					movieList.map((item, key) => (
 						<MovieRow
+							hoverHandler={hoverHandler}
+							key={key}
+							title={item.title}
+							items={item.items}
+						/>
+					))}
+				{search &&
+					searchResult.length &&
+					searchResult.map((item, key) => (
+						<MovieRow
+							hoverHandler={hoverHandler}
 							key={key}
 							title={item.title}
 							items={item.items}
@@ -92,7 +128,7 @@ export default function Home() {
 
 			{/* <Footer /> */}
 
-			{movieList.length <= 0 && (
+			{(isLoading | movieList.length) <= 0 && (
 				<div className='loading'>
 					<img
 						src='https://media.filmelier.com/noticias/br/2020/03/Netflix_LoadTime.gif'

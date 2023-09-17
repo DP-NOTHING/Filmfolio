@@ -48,12 +48,18 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 		borderRadius: 20 / 2,
 	},
 }));
-export default function Header({ black, movieSwitch, movieSwitchHandler }) {
+export default function Header({
+	black,
+	movieSwitch,
+	movieSwitchHandler,
+	queryHandler,
+	searchHandler,
+}) {
 	return (
 		// <h1>hi</h1>
 		<header className={black ? 'black' : ''}>
 			<div className='header--logo'>
-				<a href='/'>
+				<a href='/home'>
 					<img
 						src={logo}
 						alt='logo'
@@ -62,7 +68,10 @@ export default function Header({ black, movieSwitch, movieSwitchHandler }) {
 			</div>
 			<MaterialUISwitch onChange={() => movieSwitchHandler()} />
 			{movieSwitch == true ? <span>movie</span> : <span>tv shows</span>}
-			<SearchBar />
+			<SearchBar
+				searchHandler={searchHandler}
+				queryHandler={queryHandler}
+			/>
 			<div className='header--user'>
 				<a href='/user'>
 					<img

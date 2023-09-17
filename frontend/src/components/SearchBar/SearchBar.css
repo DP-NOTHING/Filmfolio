@@ -25,10 +25,10 @@
 	width: 35px;
 	height: 35px;
 }
-.search-bar-container:hover > .search-bar {
+.search-bar.visible {
 	padding: 1%;
 	visibility: visible;
-	width: 150px;
-	background-color: #ff0d0b;
-	opacity: 0.5;
+	width: 170px;
+	background-color: #fc3f3f;
+	opacity: 0.78;
 }

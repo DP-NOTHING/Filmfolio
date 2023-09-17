@@ -176,4 +176,13 @@ export default {
 
 		return info;
 	},
+	getSearchResults: async (query) => {
+		return {
+			slug: 'searchresults',
+			title: 'Search Results :',
+			items: await Axios(
+				`/search/multi?include_adult=false&language=en-US&page=1&query=${query}&api_key=${API_KEY}`
+			),
+		};
+	},
 };
