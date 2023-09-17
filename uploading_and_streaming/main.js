@@ -25,7 +25,7 @@ const storage = new GridFsStorage({
 	},
 });
 const upload = multer({ storage });
-router.route('/get-video').get(async (req, res) => {
+router.route('/get-video/:id').get(async (req, res) => {
 	const file = await gfs.files.findOne({
 		filename: 'fe61b47179fa4fb576bd02a42fe1a421',
 	});
@@ -62,9 +62,11 @@ router.route('/get-video').get(async (req, res) => {
 		readStream.pipe(res);
 	}
 });
-router.route('/upload-video').post(upload.single('video'), async (req, res) => {
-	return res.end('uploaded successfully');
-});
+router
+	.route('/upload-video/:id')
+	.post(upload.single('video'), async (req, res) => {
+		return res.end('uploaded successfully');
+	});
 (async () => {
 	console.log(process.env.CONNECTIONSTRING);
 	const conn = await mongoose.connect(process.env.CONNECTIONSTRING);
