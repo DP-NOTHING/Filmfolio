@@ -7,78 +7,82 @@ import FeatureMovie from './FeaturedMovie/FeatureMovie';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
 
-export default function Home(){
+export default function Home() {
+	const [movieList, setMovieList] = useState([]);
+	const [featureData, setfeatureData] = useState(null);
+	const [blackHeader, setBlackHeader] = useState(false);
+	const [movieSwitch, setMovieSwitch] = useState(true); // for switching movie and tv shows page
+	const movieSwitchHandler = () => {
+		setMovieSwitch(!movieSwitch);
+	};
+	useEffect(() => {
+		const loadAll = async () => {
+			//Pegando a lista TOTAL
+			let list = await Tmdb.getHomeList();
+			setMovieList(list);
 
-  const [movieList, setMovieList] = useState([]);
-  const [featureData, setfeatureData] = useState(null);
-  const [blackHeader, setBlackHeader] = useState(false);
-  
-  
-  useEffect(() => {
-    const loadAll = async () => {
-      //Pegando a lista TOTAL
-      let list = await Tmdb.getHomeList();  
-      setMovieList(list);
-      
+			//Pegando o Filme em Destaque
+			let originals = list.filter((i) => i.slug === 'originals');
+			let trending = list.filter((i) => i.slug === 'trending');
+			let randomChosen = Math.floor(
+				Math.random() * (trending[0].items.results.length - 1)
+			);
+			let chosen = trending[0].items.results[randomChosen];
+			let chosenInfo = await Tmdb.getMovierInfo(chosen.id, 'movie');
+			setfeatureData(chosenInfo);
+		};
 
-      //Pegando o Filme em Destaque
-      let originals = list.filter(i=>i.slug === 'originals');
-      let trending = list.filter(i=>i.slug === 'trending');
-      let randomChosen = Math.floor(Math.random() * (trending[0].items.results.length -1));
-      let chosen = trending[0].items.results[randomChosen];
-      let chosenInfo = await Tmdb.getMovierInfo(chosen.id, 'movie');
-      setfeatureData(chosenInfo);
+		loadAll();
+	}, [movieSwitch]);
 
-    }
-    
-    loadAll();
-  }, []);
+	useEffect(() => {
+		const scrollListener = () => {
+			if (window.scrollY > 10) {
+				setBlackHeader(true);
+			} else {
+				setBlackHeader(false);
+			}
+		};
 
+		window.addEventListener('scroll', scrollListener);
 
-  useEffect (() => {
-    const scrollListener = () => {
-      if(window.scrollY > 10) {
-        setBlackHeader(true);
-      } else {
-        setBlackHeader(false);
-      }
-    }
+		return () => {
+			window.removeEventListener('scroll', scrollListener);
+		};
+	}, []);
 
-    window.addEventListener('scroll', scrollListener);
+	return (
+		<div className='page'>
+			<Header
+				black={blackHeader}
+				movieSwitch={movieSwitch}
+				movieSwitchHandler={movieSwitchHandler}
+			/>
 
-    return () => {
-      window.removeEventListener('scroll', scrollListener);
-    }
-  }, [])
+			{featureData && <FeatureMovie item={featureData} />}
 
+			<section className='lists'>
+				{movieList.map((item, key) => (
+					<MovieRow
+						key={key}
+						title={item.title}
+						items={item.items}
+					/>
+				))}
+			</section>
 
-  return (
-    <div className="page">
+			{/* <Footer /> */}
 
-      <Header black={blackHeader} />
+			{movieList.length <= 0 && (
+				<div className='loading'>
+					<img
+						src='https://media.filmelier.com/noticias/br/2020/03/Netflix_LoadTime.gif'
+						alt='Loading...'
+					/>
+				</div>
+			)}
 
-      {featureData &&
-        <FeatureMovie item={featureData} />
-      }
-
-      <section className="lists">
-        {movieList.map((item, key) => ( 
-          <MovieRow key={key} title={item.title} items={item.items}  />
-        ))}
-      </section>
-      
-      {/* <Footer /> */}
-
-      {movieList.length <= 0 &&
-      <div className="loading">
-        <img src="https://media.filmelier.com/noticias/br/2020/03/Netflix_LoadTime.gif" alt="Loading..." />
-      </div>
-      }
-
-      <Footer/>
-      
-    </div>
-  )
+			<Footer />
+		</div>
+	);
 }
-
-

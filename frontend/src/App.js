@@ -1,7 +1,12 @@
-import React from 'react'
+import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, NavLink ,Routes} from "react-router-dom";
-import Home from "./components/Home"
+import {
+	BrowserRouter as Router,
+	Route,
+	NavLink,
+	Routes,
+} from 'react-router-dom';
+import Home from './components/Home';
 import Login from './page/Login';
 import User from './components/User/User';
 import Player from './components/Player/Player';
@@ -36,31 +41,37 @@ import Player from './components/Player/Player';
 //                 <button type="submit"
 //                 onClick={handleOnSubmit}>submit</button>
 //             </form>
-            
+
 //         </>
-       
+
 //     );
 // }
- 
+
 // export default App;
 
-
-
-
 function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path='/home' element={<Home/>}/>
-        <Route path='/user' element={<User/>}/>
-        <Route path="/Player" element={<Player/>}/>
-        <Route path="/*" element={<Login/>}/>
-        
-      </Routes>
-    </Router>
-  );
+	return (
+		<Router>
+			<Routes>
+				<Route
+					path='/home'
+					element={<Home />}
+				/>
+				<Route
+					path='/user'
+					element={<User />}
+				/>
+				<Route
+					path='/player/*'
+					element={<Player />}
+				/>
+				<Route
+					path='/*'
+					element={<Login />}
+				/>
+			</Routes>
+		</Router>
+	);
 }
 
 export default App;
-
-
