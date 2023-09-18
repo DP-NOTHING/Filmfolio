@@ -10,22 +10,16 @@ export default function SearchBar({ queryHandler, searchHandler }) {
 			Tmdb.getSearchResults(query).then((data) => queryHandler(data));
 		} else {
 			setTimeout(() => {
-				setIsInputVisible(false);
+				// if(query.length==0)
+					setIsInputVisible(false);
+				// }
+				
 			}, 3000);
 			searchHandler(false);
 		}
-	}, [query]);
+	}, [query]);	
 	return (
 		<div className='search-bar-container'>
-			<input
-				value={query}
-				onChange={(e) => {
-					setIsInputVisible(true);
-					setQuery(e.target.value);
-				}}
-				className={`search-bar${isInputVisible ? ' visible' : ''}`}
-				type='text'
-			/>
 			<button
 				className='search-btn'
 				onClick={() => {
@@ -35,6 +29,16 @@ export default function SearchBar({ queryHandler, searchHandler }) {
 					setIsInputVisible(!isInputVisible);
 				}}
 			></button>
+			<input
+				value={query}
+				onChange={(e) => {
+					setIsInputVisible(true);
+					setQuery(e.target.value);
+				}}
+				className={`search-bar${isInputVisible ? ' visible' : ''}`}
+				type='text'
+			/>
+			
 		</div>
 	);
 }

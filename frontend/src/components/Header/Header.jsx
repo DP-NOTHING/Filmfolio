@@ -7,7 +7,7 @@ import SearchBar from '../SearchBar/SearchBar';
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 	width: 70,
 	height: 32,
-	padding: 7,
+	padding: 9,
 	'& .MuiSwitch-switchBase': {
 		margin: 1,
 		padding: 0,
@@ -67,7 +67,13 @@ export default function Header({
 				</a>
 			</div>
 			<MaterialUISwitch onChange={() => movieSwitchHandler()} />
-			{movieSwitch == true ? <span>movie</span> : <span>tv shows</span>}
+			<div style={
+				{width:80,
+				fontWeight:'bold',
+				fontSize:20,
+			}}>
+				{movieSwitch == true ? <span>movie</span> : <span>tv shows</span>}
+			</div>
 			<SearchBar
 				searchHandler={searchHandler}
 				queryHandler={queryHandler}

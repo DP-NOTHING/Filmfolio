@@ -19,6 +19,8 @@
 	padding-left: 30px;
 	padding-bottom: 150px;
 	padding-top: 70px;
+	/* max-height: 80%;
+	min-height: 80%; */
 }
 
 .featured--name {
@@ -49,6 +51,8 @@
 	color: #999;
 	max-width: 35%;
 	transition: opacity 0.8s ease-in-out;
+	/* min-height: 50px;
+	max-height: 50px; */
 }
 
 .featured--buttons {
@@ -105,6 +109,10 @@
 		font-size: 14px;
 		max-width: 100%;
 		margin-right: 30px;
+		 /* height: 600px; */
+		/* max-height: 1px/; */
+		/* min-height: 50px; */
+		
 	}
 	.featured--watchbutton,
 	.featured--mylistbutton {

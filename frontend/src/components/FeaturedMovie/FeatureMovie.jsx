@@ -30,9 +30,9 @@ export default function FeatureMovie({ item }) {
 	}
 	// console.log(item.name, '+++++++++++++++++++++++++++++===');
 	let description = item.overview;
-	// if (description.length > 200) {
-	// 	description = description.substring(0, 200) + '...';
-	// }
+	if (description.length > 200) {
+		description = description.substring(0, 200) + '...';
+	}
 
 	return (
 		<section
@@ -58,7 +58,11 @@ export default function FeatureMovie({ item }) {
 						{/* { if}
                         <div className="featured--seasons">{item.number_of_seasons} seasons{item.number_of_seasons !== 1 ? 's' : ''}</div> */}
 					</div>
-					<div className='featured--description'>{description}</div>
+					<div style={{minBlockSize:'50px',
+				minHeight:'50px',
+				height:'120px'}}>
+						<div className='featured--description'>{description}</div>
+					</div>
 					<div className='featured--buttons'>
 						<a
 							className='featured--watchbutton'

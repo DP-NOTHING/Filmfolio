@@ -15,7 +15,9 @@
 
 .movieRow--list {
     transition: all ease 0.5s;
-    
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    display: flex;
 }
 
 .movieRow--item {
@@ -23,6 +25,7 @@
     width: 150px;
     cursor: pointer;
     border-radius: 18px;
+    scroll-snap-align: start;
 }
 
 .movieRow--item img {

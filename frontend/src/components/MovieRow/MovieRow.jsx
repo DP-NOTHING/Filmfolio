@@ -30,7 +30,9 @@ export default function MovieRow({ title, items, hoverHandler }) {
 		if (isScrollingLeft) {
 			let x = scrollX + Math.round(window.innerWidth / 2);
 			// Clamp the left scroll to prevent going out of range
+			// let listW = items.results.length * 122;
 			x = Math.min(x, 0);
+			// x=Math.max(x, window.innerWidth + listW - 60);
 			setScrollX(x);
 		} else if (isScrollingRight) {
 			let x = scrollX - Math.round(window.innerWidth / 2);
