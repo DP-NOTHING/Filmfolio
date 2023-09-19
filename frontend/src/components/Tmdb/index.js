@@ -1,4 +1,6 @@
 import axios from 'axios';
+// const movieTrailer = require('movie-trailer');
+import movieTrailer from 'movie-trailer';
 const API_KEY = 'a529c88c4b88bffb7c515f794e2c8ff1';
 const API_BASE = 'https://api.themoviedb.org/3';
 
@@ -21,17 +23,17 @@ export default {
 	getTvShowList: async () => {
 		return [
 			{
+				slug: 'trending',
+				title: 'Trending',
+				items: await Axios(
+					`/trending/tv/week?language=en-US&with_original_language=en&api_key=${API_KEY}`
+				),
+			},
+			{
 				slug: 'popular',
 				title: 'Tv',
 				items: await Axios(
 					`/tv/popular?language=en-US&with_original_language=en&api_key=${API_KEY}`
-				),
-			},
-			{
-				slug: 'trending',
-				title: 'Recomended',
-				items: await Axios(
-					`/trending/tv/week?language=en-US&with_original_language=en&api_key=${API_KEY}`
 				),
 			},
 			{
@@ -96,7 +98,7 @@ export default {
 		return [
 			{
 				slug: 'trending',
-				title: 'Recomended',
+				title: 'trending',
 				items: await Axios(
 					`/trending/all/week?language=en-US&with_original_language=hi&api_key=${API_KEY}`
 				),
@@ -155,7 +157,7 @@ export default {
 
 	getMovieInfo: async (movieId, type) => {
 		let info = {};
-
+		// let trailer={}
 		if (movieId) {
 			switch (type) {
 				case 'movie':
@@ -173,8 +175,16 @@ export default {
 					break;
 			}
 		}
-
-		return info;
+		const trailer = await (async () => {
+			await movieTrailer('Up');
+			const link = await movieTrailer(null, {
+				tmdbId: `${movieId}`,
+				videoType: `${type}`,
+				apiKey: API_KEY,
+			});
+			return link;
+		})();
+		return { info, trailer };
 	},
 	getSearchResults: async (query) => {
 		return {
@@ -184,5 +194,14 @@ export default {
 				`/search/multi?include_adult=false&language=en-US&page=1&query=${query}&api_key=${API_KEY}`
 			),
 		};
+	},
+	getTrailer: async (id, type) => {
+		await movieTrailer('Up');
+		const link = await movieTrailer(null, {
+			tmdbId: '111110',
+			videoType: 'tv',
+			apiKey: API_KEY,
+		});
+		return link;
 	},
 };

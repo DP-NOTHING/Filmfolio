@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import {
 	BrowserRouter as Router,
@@ -50,7 +50,20 @@ import Player from './components/Player/Player';
 // export default App;
 
 function App() {
-	return (
+	const [isOnline, setIsOnline] = useState(navigator.onLine);
+	const handleOnlineStatus = () => {
+		setIsOnline(navigator.onLine);
+	};
+
+	useEffect(() => {
+		window.addEventListener('online', handleOnlineStatus);
+		window.addEventListener('offline', handleOnlineStatus);
+		return () => {
+			window.removeEventListener('online', handleOnlineStatus);
+			window.removeEventListener('offline', handleOnlineStatus);
+		};
+	}, []);
+	return isOnline ? (
 		<Router>
 			<Routes>
 				<Route
@@ -71,6 +84,8 @@ function App() {
 				/>
 			</Routes>
 		</Router>
+	) : (
+		<div>you are offline</div>
 	);
 }
 

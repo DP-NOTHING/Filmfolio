@@ -67,12 +67,12 @@ export default function Header({
 				</a>
 			</div>
 			<MaterialUISwitch onChange={() => movieSwitchHandler()} />
-			<div style={
-				{width:80,
-				fontWeight:'bold',
-				fontSize:20,
-			}}>
-				{movieSwitch == true ? <span>movie</span> : <span>tv shows</span>}
+			<div style={{ width: 80, fontWeight: 'bold', fontSize: 20 }}>
+				{movieSwitch == true ? (
+					<span>movie</span>
+				) : (
+					<span>tv shows</span>
+				)}
 			</div>
 			<SearchBar
 				searchHandler={searchHandler}

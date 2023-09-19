@@ -1,9 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './RoWItem.css';
+import Tmdb from '../Tmdb';
 export default function RowItem(props) {
 	function fun(e) {
-		props.hoverHandler(props.info);
+		Tmdb.getMovieInfo(props.info.id, props.info.media_type).then((data) =>
+			props.hoverHandler(data)
+		);
 	}
 	const Navigate = useNavigate();
 	return (

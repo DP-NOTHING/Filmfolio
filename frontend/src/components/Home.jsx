@@ -17,7 +17,7 @@ export default function Home() {
 	const [blackHeader, setBlackHeader] = useState(false);
 	const [movieSwitch, setMovieSwitch] = useState(true); // for switching movie and tv shows page
 	const hoverHandler = (item) => {
-		setHoveredItem(item);
+		if (item.info) setHoveredItem(item);
 	};
 	const movieSwitchHandler = () => {
 		setMovieSwitch(!movieSwitch);
@@ -30,21 +30,32 @@ export default function Home() {
 	};
 	useEffect(() => {
 		const loadAllMovies = async () => {
+			const link = await Tmdb.getTrailer();
+			console.log(link);
 			// console.log('hello');
 			// console.log(movieSwitch);
 			//Pegando a lista TOTAL
 			let list = await Tmdb.getMovieHomeList();
-			console.log(list, '###############################');
+			// console.log(list, '###############################');
 			setMovieList(list);
 			//Pegando o Filme em Destaque
 			// let originals = list.filter((i) => i.slug === 'originals');
 			let trending = list.filter((i) => i.slug === 'trending');
-			let randomChosen = Math.floor(
-				Math.random() * (trending[0].items.results.length - 1)
-			);
-			let chosen = trending[0].items.results[randomChosen];
-			let chosenInfo = await Tmdb.getMovieInfo(chosen.id, 'movie');
-			setfeatureData(chosenInfo);
+			// let info = null;
+			while (true) {
+				let randomChosen = Math.floor(
+					Math.random() * (trending[0].items.results.length - 1)
+				);
+				let chosen = trending[0].items.results[randomChosen];
+				let { info, trailer } = await Tmdb.getMovieInfo(
+					chosen.id,
+					'movie'
+				);
+				if (info) {
+					setfeatureData({ info, trailer });
+					break;
+				}
+			}
 		};
 		const loadAllTvShows = async () => {
 			// setMovieList([]);
@@ -52,21 +63,32 @@ export default function Home() {
 			// console.log(list);
 			setMovieList(list);
 			let trending = list.filter((i) => i.slug === 'trending');
-			let randomChosen = Math.floor(
-				Math.random() * (trending[0].items.results.length - 1)
-			);
-			let chosen = trending[0].items.results[randomChosen];
-			let chosenInfo = await Tmdb.getMovieInfo(chosen.id, 'tv');
-			// console.log(chosenInfo);
-			setfeatureData(chosenInfo);
+			while (true) {
+				let randomChosen = Math.floor(
+					Math.random() * (trending[0].items.results.length - 1)
+				);
+				let chosen = trending[0].items.results[randomChosen];
+				let { info, trailer } = await Tmdb.getMovieInfo(
+					chosen.id,
+					'tv'
+				);
+				if (info) {
+					setfeatureData({ info, trailer });
+					break;
+				}
+			}
 		};
 		// const loadSearchResults = async () => {
 		// 	// const data = await Tmdb.getSearchResults(query);
 		// 	// console.log(data);
 		// };
 		if (movieSwitch == true) {
-			loadAllMovies();
+			// Tmdb.getTrailer()
+			// console.log();
+			setIsLoading(true);
+			loadAllMovies().then(() => setIsLoading(false));
 		} else {
+			setIsLoading(true);
 			loadAllTvShows().then(() => setIsLoading(false));
 		}
 		// if (search == true) {
@@ -74,7 +96,6 @@ export default function Home() {
 		// }
 		// return () => clearInterval(id);
 	}, [movieSwitch]);
-
 	useEffect(() => {
 		const scrollListener = () => {
 			if (window.scrollY > 10) {
@@ -90,7 +111,6 @@ export default function Home() {
 			window.removeEventListener('scroll', scrollListener);
 		};
 	}, []);
-
 	return (
 		<div className='page'>
 			<Header
@@ -115,7 +135,7 @@ export default function Home() {
 						/>
 					))}
 				{search &&
-					searchResult.length &&
+					searchResult?.length &&
 					searchResult.map((item, key) => (
 						<MovieRow
 							hoverHandler={hoverHandler}
@@ -128,7 +148,7 @@ export default function Home() {
 
 			{/* <Footer /> */}
 
-			{(isLoading | movieList.length) <= 0 && (
+			{isLoading && (
 				<div className='loading'>
 					<img
 						src='https://media.filmelier.com/noticias/br/2020/03/Netflix_LoadTime.gif'

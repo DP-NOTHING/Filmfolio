@@ -24,8 +24,8 @@ export default function MovieRow({ title, items, hoverHandler }) {
 	};
 	const handleScroll = (event) => {
 		// Check if deltaX or deltaY is positive/negative to determine the scroll direction
-		const isScrollingLeft = event.deltaX < 0 || event.deltaY < 0;
-		const isScrollingRight = event.deltaX > 0 || event.deltaY > 0;
+		const isScrollingLeft = event.deltaX < 0;
+		const isScrollingRight = event.deltaX > 0;
 
 		if (isScrollingLeft) {
 			let x = scrollX + Math.round(window.innerWidth / 2);
@@ -78,33 +78,35 @@ export default function MovieRow({ title, items, hoverHandler }) {
 					}}
 				>
 					{items.results.length > 0 &&
-						items.results.map((item, key) => (
-							// <div key={key} className="movieRow--item">
-							//     {/* <div  style={{borderRadius:"18px"}}> */}
-							//     <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`} alt={item.original_title} style={{borderRadius:"18px"}}/>
+						items.results
+							.filter((item) => item?.media_type !== 'person')
+							.map((item, key) => (
+								// <div key={key} className="movieRow--item">
+								//     {/* <div  style={{borderRadius:"18px"}}> */}
+								//     <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`} alt={item.original_title} style={{borderRadius:"18px"}}/>
 
-							// </div>
-							// <div>
-							<RowItem
-								// changing id value from key to item.id
-								// info for now contains the whole item object
-								hoverHandler={hoverHandler}
-								info={item}
-								id={item.id}
-								key={key}
-								src={
-									item.poster_path
-										? `https://image.tmdb.org/t/p/w300${item.poster_path}`
-										: null
-								}
-								alt={
-									item.original_title
-										? item.original_title
-										: item.name
-								}
-							/>
-							// </div>
-						))}
+								// </div>
+								// <div>
+								<RowItem
+									// changing id value from key to item.id
+									// info for now contains the whole item object
+									hoverHandler={hoverHandler}
+									info={item}
+									id={item.id}
+									key={key}
+									src={
+										item.poster_path
+											? `https://image.tmdb.org/t/p/w300${item.poster_path}`
+											: null
+									}
+									alt={
+										item.original_title
+											? item.original_title
+											: item.name
+									}
+								/>
+								// </div>
+							))}
 				</div>
 			</div>
 		</div>

@@ -1,38 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './FeatureMovie.css';
-// import FeaturedMovie from '.';
-
-export default function FeatureMovie({ item }) {
-	console.log(item);
-	// console.log(item, '---------------------------------------');
+import ReactPlayer from 'react-player';
+import Tmdb from '../Tmdb';
+export default function FeatureMovie({ item: { info, trailer } }) {
+	console.log(trailer);
+	const [videoState, setVideoState] = useState(false);
 	let time;
-	if (item.release_date) {
-		time = new Date(item.release_date).getFullYear().toString();
-	} else if (item.first_air_date && item.last_air_date) {
+	// console.log(trailer);
+	if (info?.release_date) {
+		time = new Date(info?.release_date).getFullYear().toString();
+	} else if (info?.first_air_date && info?.last_air_date) {
 		time =
-			new Date(item.first_air_date).getFullYear().toString() +
+			new Date(info?.first_air_date).getFullYear().toString() +
 			' - ' +
-			new Date(item.last_air_date).getFullYear().toString();
-	} else if (item.first_air_date) {
-		time = new Date(item.first_air_date).getFullYear().toString();
+			new Date(info?.last_air_date).getFullYear().toString();
+	} else if (info?.first_air_date) {
+		time = new Date(info?.first_air_date).getFullYear().toString();
 	}
-	// let firstDate = new Date(item.first_air_date);
+	useEffect(() => setVideoState(false), []);
+	// let firstDate = new Date(info?.first_air_date);
 	// let firstDate = new Date(
-	// 	item.release_date
-	// 		? item.release_date
-	// 		: item.last_air_date
-	// 		? item.last_air_date
-	// 		: item.first_air_date
+	// 	info?.release_date
+	// 		? info?.release_date
+	// 		: info?.last_air_date
+	// 		? info?.last_air_date
+	// 		: info?.first_air_date
 	// );
 	let genres = [];
-	for (let i in item.genres) {
-		genres.push(item.genres[i].name);
+	for (let i in info?.genres) {
+		genres.push(info?.genres[i].name);
 	}
-	// console.log(item.name, '+++++++++++++++++++++++++++++===');
-	let description = item.overview;
-	if (description.length > 200) {
-		description = description.substring(0, 200) + '...';
-	}
+	// console.log(info?.name, '+++++++++++++++++++++++++++++===');
+	let description = info?.overview;
+	// if (description.length > 200) {
+	// 	description = description.substring(0, 200) + '...';
+	// }
 
 	return (
 		<section
@@ -40,28 +42,138 @@ export default function FeatureMovie({ item }) {
 			style={{
 				backgroundSize: 'cover',
 				backgroundPosition: 'center',
-				backgroundImage: item.backdrop_path
-					? `url(http://image.tmdb.org/t/p/original${item.backdrop_path})`
-					: `url(https://cdn-icons-png.flaticon.com/512/3163/3163508.png)`,
+				backgroundImage:
+					!videoState | !trailer
+						? info?.backdrop_path
+							? `url(http://image.tmdb.org/t/p/original${info?.backdrop_path})`
+							: `url(https://cdn-icons-png.flaticon.com/512/3163/3163508.png)`
+						: '',
 			}}
 		>
+			{trailer ? (
+				<ReactPlayer
+					loop
+					onStart={() => setVideoState(true)}
+					className='background-video'
+					url={`${trailer}`}
+					muted
+					controls={false} // Show video controls
+					playing={true} // Auto-play (change to true if you want it to auto-play)
+					width='100%'
+					height='100%'
+					config={{
+						youtube: {
+							playerVars: {
+								modestbranding: 1,
+								controls: 0,
+								showinfo: 0,
+								rel: 0,
+							},
+						},
+					}}
+				/>
+			) : (
+				''
+			)}
+			{/* <Youtube
+				onPlay={() => setVideoState(true)}
+				videoId={trailer?.split('?')[1].split('=')[1]}
+				opts={{
+					height: '100%', // Set the height to 100% to cover the container's height
+					width: '100%', // Set the width to 100% to cover the container's width
+					playerVars: {
+						autoplay: 1,
+						mute: 1,
+						controls: 0,
+						disablekb: 1,
+						modestbranding: 1,
+						rel: 0,
+						loop: 1,
+						poster: info?.backdrop_path
+							? `url(http://image.tmdb.org/t/p/original${info?.backdrop_path})`
+							: `url(https://cdn-icons-png.flaticon.com/512/3163/3163508.png)`,
+					},
+				}}
+				className='background-video' // Add a class for styling if needed
+			/> */}
+
+			{/* <Youtube
+				videoId={trailer.split('?')[1].split('=')[1]}
+				opts={{
+					playerVars: {
+						autoplay: 1,
+						mute: 1,
+						controls: 0,
+						modestbranding: 1,
+						rel: 0,
+					},
+				}}
+			/> */}
+			{/* <video
+				// autoPlay
+				loop
+				// muted
+				style={{
+					objectFit: 'cover',
+					width: '100%',
+					height: '100%',
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					zIndex: 1,
+				}}
+			>
+				<source
+					src={`${trailer}`}
+					type='video/mp4'
+				/>
+				Your browser does not support the video tag.
+			</video> */}
 			<div className='featured--vertical'>
 				<div className='featured--horizontal'>
 					<div className='featured--name'>
-						{item.original_title ? item.original_title : item.name}
+						{info?.original_title
+							? info?.original_title
+							: info?.name}
 					</div>
 					<div className='featured--info'>
 						<div className='featured--points'>
-							{item.vote_average} Rated
+							{info?.vote_average} Rated
 						</div>
 						<div className='featured--year'>{time}</div>
+						<div className='featured--seasons'>
+							{info?.seasons?.length
+								? 'seasons ' + info?.seasons.length
+								: ''}
+						</div>
+						<div className='featured--episodes'>
+							{info?.number_of_episodes
+								? 'episodes ' + info?.number_of_episodes
+								: ''}
+						</div>
+
 						{/* { if}
-                        <div className="featured--seasons">{item.number_of_seasons} seasons{item.number_of_seasons !== 1 ? 's' : ''}</div> */}
+                        <div className="featured--seasons">{info?.number_of_seasons} seasons{info?.number_of_seasons !== 1 ? 's' : ''}</div> */}
 					</div>
-					<div style={{minBlockSize:'50px',
-				minHeight:'50px',
-				height:'120px'}}>
-						<div className='featured--description'>{description}</div>
+					<div
+						style={{
+							minBlockSize: '50px',
+							minHeight: '50px',
+							height: '120px',
+							overflow: 'hidden',
+						}}
+					>
+						<div
+							className='featured--description'
+							style={{
+								overflow: 'hidden',
+								display: '-webkit-box',
+								WebkitLineClamp: 4,
+								WebkitBoxOrient: 'vertical',
+							}}
+						>
+							{description}
+						</div>
 					</div>
 					<div className='featured--buttons'>
 						<a
@@ -72,15 +184,15 @@ export default function FeatureMovie({ item }) {
 						</a>
 						<a
 							className='featured--mylistbutton'
-							href={`/list/add/${item.id}`}
+							href={`/list/add/${info?.id}`}
 						>
 							+Add
 						</a>
 					</div>
-					{/* <div className='featured--genres'>
+					<div className='featured--genres'>
 						{' '}
 						<strong>Genres</strong> {genres.join(', ')}
-					</div> */}
+					</div>
 				</div>
 			</div>
 		</section>
