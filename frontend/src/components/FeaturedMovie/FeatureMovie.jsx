@@ -177,7 +177,7 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 							style={{
 								overflow: 'hidden',
 								display: '-webkit-box',
-								WebkitLineClamp: 4,
+								WebkitLineClamp: 3,
 								WebkitBoxOrient: 'vertical',
 							}}
 						>
