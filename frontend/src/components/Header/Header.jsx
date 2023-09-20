@@ -4,50 +4,54 @@ import logo from '../../assets/logo2.png';
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
 import SearchBar from '../SearchBar/SearchBar';
-const MaterialUISwitch = styled(Switch)(({ theme }) => ({
-	width: 70,
-	height: 32,
-	padding: 9,
-	'& .MuiSwitch-switchBase': {
-		margin: 1,
-		padding: 0,
-		transform: 'translateX(6px)',
-		'&.Mui-checked': {
-			color: '#fff',
-			transform: 'translateX(30px)',
-			'& .MuiSwitch-thumb:before': {
-				backgroundImage: `url('https://emoji.aranja.com/static/emoji-data/img-google-136/1f4fa.png')`,
-			},
-			'& + .MuiSwitch-track': {
-				opacity: 1,
-				backgroundColor:
-					theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-			},
-		},
-	},
-	'& .MuiSwitch-thumb': {
-		backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
-		width: 32,
-		height: 32,
-		'&:before': {
-			content: "''",
-			position: 'absolute',
-			width: '100%',
-			height: '100%',
-			left: 0,
-			top: 0,
-			backgroundRepeat: 'no-repeat',
-			backgroundPosition: 'center',
-			backgroundImage: `url('https://emoji.aranja.com/static/emoji-data/img-google-136/1f3a5.png')`,
-			backgroundSize: '20px 20px',
-		},
-	},
-	'& .MuiSwitch-track': {
-		opacity: 1,
-		backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-		borderRadius: 20 / 2,
-	},
-}));
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+
+// const MaterialUISwitch = styled(Switch)(({ theme }) => ({
+// 	width: 70,
+// 	height: 32,
+// 	padding: 9,
+// 	'& .MuiSwitch-switchBase': {
+// 		margin: 1,
+// 		padding: 0,
+// 		transform: 'translateX(6px)',
+// 		'&.Mui-checked': {
+// 			color: '#fff',
+// 			transform: 'translateX(30px)',
+// 			'& .MuiSwitch-thumb:before': {
+// 				backgroundImage: `url('https://emoji.aranja.com/static/emoji-data/img-google-136/1f4fa.png')`,
+// 			},
+// 			'& + .MuiSwitch-track': {
+// 				opacity: 1,
+// 				backgroundColor:
+// 					theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+// 			},
+// 		},
+// 	},
+// 	'& .MuiSwitch-thumb': {
+// 		backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+// 		width: 32,
+// 		height: 32,
+// 		'&:before': {
+// 			content: "''",
+// 			position: 'absolute',
+// 			width: '100%',
+// 			height: '100%',
+// 			left: 0,
+// 			top: 0,
+// 			backgroundRepeat: 'no-repeat',
+// 			backgroundPosition: 'center',
+// 			backgroundImage: `url('https://emoji.aranja.com/static/emoji-data/img-google-136/1f3a5.png')`,
+// 			backgroundSize: '20px 20px',
+// 		},
+// 	},
+// 	'& .MuiSwitch-track': {
+// 		opacity: 1,
+// 		backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+// 		borderRadius: 20 / 2,
+// 	},
+// }));
 export default function Header({
 	black,
 	movieSwitch,
@@ -55,6 +59,7 @@ export default function Header({
 	queryHandler,
 	searchHandler,
 }) {
+	// console.log(movieSwitch);
 	return (
 		// <h1>hi</h1>
 		<header className={black ? 'black' : ''}>
@@ -66,14 +71,39 @@ export default function Header({
 					/>
 				</a>
 			</div>
-			<MaterialUISwitch onChange={() => movieSwitchHandler()} />
-			<div style={{ width: 80, fontWeight: 'bold', fontSize: 20 }}>
+			<Navbar
+				bg='transparent'
+				variant='dark'
+				expand='lg'
+			>
+				<Container>
+					<Navbar.Toggle aria-controls='basic-navbar-nav' />
+					<Navbar.Collapse id='basic-navbar-nav'>
+						<Nav className='me-auto'>
+							<Nav.Link
+								active={movieSwitch ? true : false}
+								onClick={() => movieSwitchHandler(true)}
+							>
+								Movies
+							</Nav.Link>
+							<Nav.Link
+								active={!movieSwitch ? true : false}
+								onClick={() => movieSwitchHandler(false)}
+							>
+								Tv Shows
+							</Nav.Link>
+						</Nav>
+					</Navbar.Collapse>
+				</Container>
+			</Navbar>
+			{/* <MaterialUISwitch onChange={() => movieSwitchHandler()} /> */}
+			{/* <div style={{ width: 80, fontWeight: 'bold', fontSize: 20 }}>
 				{movieSwitch == true ? (
 					<span>movie</span>
 				) : (
 					<span>tv shows</span>
 				)}
-			</div>
+			</div> */}
 			<SearchBar
 				searchHandler={searchHandler}
 				queryHandler={queryHandler}

@@ -15,17 +15,24 @@ export default function Home() {
 	const [movieList, setMovieList] = useState([]);
 	const [featureData, setfeatureData] = useState(null);
 	const [blackHeader, setBlackHeader] = useState(false);
-	const [movieSwitch, setMovieSwitch] = useState(true); // for switching movie and tv shows page
+	const [movieSwitch, setMovieSwitch] = useState(
+		localStorage.getItem('movieSwitch')
+			? localStorage.getItem('movieSwitch') == 'true'
+				? true
+				: false
+			: true
+	); // for switching movie and tv shows page
 	const hoverHandler = (item) => {
 		if (item.info) setHoveredItem(item);
 	};
-	const movieSwitchHandler = () => {
-		setMovieSwitch(!movieSwitch);
+	const movieSwitchHandler = (movieSwitch) => {
+		localStorage.setItem('movieSwitch', movieSwitch);
+		setMovieSwitch(movieSwitch);
 		setIsLoading(true);
 	};
 	const searchHandler = (setOrReset) => setSearch(setOrReset);
 	const queryHandler = (data) => {
-		console.log([data]);
+		// console.log([data]);
 		setSearchResult([data]);
 	};
 	useEffect(() => {

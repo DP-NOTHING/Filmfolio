@@ -11,13 +11,12 @@ export default function SearchBar({ queryHandler, searchHandler }) {
 		} else {
 			setTimeout(() => {
 				// if(query.length==0)
-					setIsInputVisible(false);
+				setIsInputVisible(false);
 				// }
-				
 			}, 3000);
 			searchHandler(false);
 		}
-	}, [query]);	
+	}, [query]);
 	return (
 		<div className='search-bar-container'>
 			<button
@@ -26,7 +25,7 @@ export default function SearchBar({ queryHandler, searchHandler }) {
 					// if (isInputVisible) {
 					// searchHandler(false);
 					// }
-					setIsInputVisible(!isInputVisible);
+					if (!isInputVisible) setIsInputVisible(!isInputVisible);
 				}}
 			></button>
 			<input
@@ -37,8 +36,8 @@ export default function SearchBar({ queryHandler, searchHandler }) {
 				}}
 				className={`search-bar${isInputVisible ? ' visible' : ''}`}
 				type='text'
+				autoFocus='true'
 			/>
-			
 		</div>
 	);
 }
