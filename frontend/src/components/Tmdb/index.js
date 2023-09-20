@@ -204,4 +204,10 @@ export default {
 		});
 		return link;
 	},
+	getEpisodes: async (id, query) => {
+		const episodes =
+			await Axios(`/tv/${id}?api_key=${API_KEY}&append_to_response=${query}
+		`);
+		return episodes;
+	},
 };

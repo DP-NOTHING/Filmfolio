@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './FeatureMovie.css';
 import ReactPlayer from 'react-player';
 import Tmdb from '../Tmdb';
+import { useNavigate } from 'react-router-dom';
 export default function FeatureMovie({ item: { info, trailer } }) {
-	console.log(trailer);
+	// console.log(trailer);
 	const [videoState, setVideoState] = useState(false);
 	let time;
 	// console.log(trailer);
@@ -17,6 +18,14 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 	} else if (info?.first_air_date) {
 		time = new Date(info?.first_air_date).getFullYear().toString();
 	}
+	const Navigate = useNavigate();
+	const playButtonHandler = (e) => {
+		e.preventDefault();
+		Navigate(`/player/${info.id}`, {
+			state: { item: info },
+		});
+		console.log(info);
+	};
 	useEffect(() => setVideoState(false), []);
 	// let firstDate = new Date(info?.first_air_date);
 	// let firstDate = new Date(
@@ -178,7 +187,9 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 					<div className='featured--buttons'>
 						<a
 							className='featured--watchbutton'
-							href={'/player'}
+							onClick={playButtonHandler}
+							// href={'/player'}
+							style={{ cursor: 'pointer' }}
 						>
 							▶ play
 						</a>
