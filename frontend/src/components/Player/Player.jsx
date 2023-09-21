@@ -21,7 +21,7 @@ export default function Player() {
 			const main = [];
 			const data = await Tmdb.getMovieInfo(item.item.id, 'tv');
 			let start = 1;
-			console.log(data.info, '())()))())()()');
+			// console.log(data.info, '())()))())()()');
 			for (let i = 1; i <= data.info.number_of_seasons; i++) {
 				query += `season/${i},`;
 				if (i % 20 === 0 || i == data.info.number_of_seasons) {
@@ -77,27 +77,67 @@ export default function Player() {
 												key={season[0].season_number}
 											>
 												<ListGroup>
-													{season.map((episode) => {
-														return (
-															<ListGroup.Item
-																key={`${season[0].season_number}-${episode.episode_number}`}
-															>
-																<h4>
-																	Episode
-																	{` ${episode.episode_number}`}
-																	:{' '}
-																	{
-																		episode.name
-																	}
-																</h4>
-																<span>
-																	{
-																		episode.overview
-																	}
-																</span>
-															</ListGroup.Item>
-														);
-													})}
+													{season.map(
+														(episode, i) => {
+															console.log(
+																episode
+															);
+															return (
+																<ListGroup.Item
+																	key={`${season[0].season_number}-${episode.episode_number}`}
+																>
+																	<h4>
+																		Episode
+																		{` ${
+																			i +
+																			1
+																		}`}
+																		:{' '}
+																		{
+																			episode.name
+																		}
+																	</h4>
+																	<span>
+																		episode:
+																		{` ${episode.episode_number}`}
+																	</span>
+																	{episode.runtime ? (
+																		<div>
+																			runtime:
+																			{` ${episode.runtime} minutes`}
+																		</div>
+																	) : (
+																		''
+																	)}
+																	{episode.overview ? (
+																		<div>
+																			overview:
+																			{` ${episode.overview}`}
+																		</div>
+																	) : (
+																		''
+																	)}
+																	{episode.vote_average ? (
+																		<div>
+																			rating:
+																			{` ${episode.vote_average} ⭐`}
+																		</div>
+																	) : (
+																		''
+																	)}
+																	{episode.air_date ? (
+																		<div>
+																			aired
+																			on:{' '}
+																			{` ${episode.air_date}`}
+																		</div>
+																	) : (
+																		''
+																	)}
+																</ListGroup.Item>
+															);
+														}
+													)}
 												</ListGroup>
 											</Accordion.Body>
 										</Accordion.Item>

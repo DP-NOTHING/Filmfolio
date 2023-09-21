@@ -7,14 +7,15 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 	// console.log(trailer);
 	const [videoState, setVideoState] = useState(false);
 	let time;
-	// console.log(trailer);
+	// console.log(info.in_production);
 	if (info?.release_date) {
 		time = new Date(info?.release_date).getFullYear().toString();
 	} else if (info?.first_air_date && info?.last_air_date) {
 		time =
 			new Date(info?.first_air_date).getFullYear().toString() +
-			' - ' +
-			new Date(info?.last_air_date).getFullYear().toString();
+			(info.in_production == false
+				? ` - ${new Date(info?.last_air_date).getFullYear().toString()}`
+				: '');
 	} else if (info?.first_air_date) {
 		time = new Date(info?.first_air_date).getFullYear().toString();
 	}
