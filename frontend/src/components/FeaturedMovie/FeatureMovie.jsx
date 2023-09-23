@@ -4,6 +4,9 @@ import ReactPlayer from 'react-player';
 import Tmdb from '../Tmdb';
 import { useNavigate } from 'react-router-dom';
 export default function FeatureMovie({ item: { info, trailer } }) {
+	trailer = `https://www.youtube-nocookie.com/embed/${
+		trailer?.split('?')[1].split('=')[1]
+	}?rel=0&loop=1&autoplay=1`;
 	// console.log(trailer);
 	const [videoState, setVideoState] = useState(false);
 	let time;
@@ -45,7 +48,9 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 	// if (description.length > 200) {
 	// 	description = description.substring(0, 200) + '...';
 	// }
-
+	useEffect(() => {
+		setVideoState(false);
+	}, [trailer]);
 	return (
 		<section
 			className='featured'
@@ -53,7 +58,7 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 				backgroundSize: 'cover',
 				backgroundPosition: 'center',
 				backgroundImage:
-					!videoState | !trailer
+					!videoState || !trailer
 						? info?.backdrop_path
 							? `url(http://image.tmdb.org/t/p/original${info?.backdrop_path})`
 							: `url(https://cdn-icons-png.flaticon.com/512/3163/3163508.png)`
@@ -62,6 +67,7 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 		>
 			{trailer ? (
 				<ReactPlayer
+					showBuffering={false}
 					loop
 					onStart={() => setVideoState(true)}
 					className='background-video'

@@ -53,24 +53,24 @@ export default function Player() {
 	return (
 		<>
 			{/* <ReactPlayer
-						controls
-						url={`https://www.youtube-nocookie.com/embed/${
-							trailer?.split('?')[1].split('=')[1]
-						}?rel=0&loop=1`}
-						muted
-						playing={true}
-						config={{
-							youtube: {
-								playerVars: {
-									modestbranding: 1,
-									controls: 0,
-									showinfo: 0,
-									rel: 0,
-								},
-							},
-						}}
-					></ReactPlayer> */}
-			{/* <div class='background'>
+				controls
+				url={`https://www.youtube-nocookie.com/embed/${
+					trailer?.split('?')[1].split('=')[1]
+				}?rel=0&loop=1`}
+				muted
+				playing={true}
+				config={{
+					youtube: {
+						playerVars: {
+							modestbranding: 1,
+							controls: 0,
+							showinfo: 0,
+							rel: 0,
+						},
+					},
+				}}
+			></ReactPlayer> */}
+			<div class='background'>
 				<div class='videoWrapper'>
 					<header class='cover'></header>
 					<iframe
@@ -78,7 +78,7 @@ export default function Player() {
 						height='1080'
 						src={`https://www.youtube-nocookie.com/embed/${
 							trailer?.split('?')[1].split('=')[1]
-						}?rel=1&loop=1&autoplay=1`}
+						}?rel=0&loop=1&autoplay=1`}
 						frameborder='0'
 						allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
 						allowfullscreen
@@ -86,10 +86,10 @@ export default function Player() {
 
 					<footer class='cover'></footer>
 				</div>
-			</div> */}
+			</div>
 			{/* <div>Player</div> */}
 			{/* <div data-vjs-player> */}
-			<video
+			{/* <video
 				// height={'100%'}
 				// width={'100%'}
 				className='video-js'
@@ -97,7 +97,7 @@ export default function Player() {
 				controls
 				src={trailer}
 				// src={`http://127.0.0.1:3000/stream/get-video/${id}`}
-			></video>
+			></video> */}
 			{list &&
 				list.map((part, i) => {
 					return (
@@ -119,7 +119,7 @@ export default function Player() {
 										>
 											<ListGroup>
 												{season.map((episode, i) => {
-													console.log(episode);
+													// console.log(episode);
 													return (
 														<ListGroup.Item
 															variant='dark'

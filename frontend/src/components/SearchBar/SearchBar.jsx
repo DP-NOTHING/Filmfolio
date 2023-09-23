@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './SearchBar.css';
 import Tmdb from '../Tmdb';
 export default function SearchBar({
@@ -8,7 +8,9 @@ export default function SearchBar({
 }) {
 	const [query, setQuery] = useState('');
 	const [isInputVisible, setIsInputVisible] = useState(false);
+	const inputRef = useRef(null);
 	useEffect(() => {
+		console.log(inputRef);
 		if (query.length != 0) {
 			searchHandler(true);
 			setIsLoading(true);
@@ -27,13 +29,17 @@ export default function SearchBar({
 			<button
 				className='search-btn'
 				onClick={() => {
-					// if (isInputVisible) {
-					// searchHandler(false);
-					// }
-					if (!isInputVisible) setIsInputVisible(!isInputVisible);
+					if (!isInputVisible) {
+						setTimeout(() => {
+							inputRef.current.focus();
+						}, 1000);
+						// console.log(inputRef.current.focus());
+						setIsInputVisible(!isInputVisible);
+					}
 				}}
 			></button>
 			<input
+				ref={inputRef}
 				value={query}
 				onChange={(e) => {
 					setIsInputVisible(true);
@@ -41,7 +47,6 @@ export default function SearchBar({
 				}}
 				className={`search-bar${isInputVisible ? ' visible' : ''}`}
 				type='text'
-				autoFocus='true'
 			/>
 		</div>
 	);
