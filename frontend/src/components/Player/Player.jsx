@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import videojs from 'video.js';
 import Tmdb from '../Tmdb/index';
-import ReactPlayer from 'react-player';
+// import ReactPlayer from 'react-player';
 // import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Accordion from 'react-bootstrap/Accordion';
+import 'video.js/dist/video-js.css';
 import './Player.css';
+import { useRef } from 'react';
 export default function Player() {
 	// getting id from my current locations
 	const id = useLocation().pathname.split('/')[2];
@@ -17,6 +19,7 @@ export default function Player() {
 	const [poster, setPoster] = useState('');
 	const item = useLocation().state;
 	// console.log(item);
+	const ref = useRef(null);
 	const getList = async () => {
 		if (item.item.first_air_date) {
 			let query = '';
@@ -50,13 +53,50 @@ export default function Player() {
 	useEffect(() => {
 		getList();
 	}, []);
+	useEffect(() => {
+		const videoPlayer = videojs(ref.current.id, {
+			controls: true,
+			autoplay: false,
+			fluid: true,
+		});
+		videoPlayer.src('https://vjs.zencdn.net/v/oceans.mp4');
+
+		// Cleanup when the component unmounts
+		// return () => {
+		// 	// console.log(videoPlayer);
+		// 	if (videoPlayer) {
+		// 		videoPlayer.dispose(); // Dispose of the Video.js player
+		// 	}
+		// };
+	}, []);
+
+	// Clean up when the component unmounts
+	//   return () => {
+	// 	player.dispose();
+	//   };
+	// }, []);
+
+	const showBigPlayButton = (player) => {
+		const bigPlayButton = player.controlBar.getChild('BigPlayButton');
+		if (bigPlayButton) {
+			bigPlayButton.show();
+		}
+	};
+
+	const hideBigPlayButton = (player) => {
+		const bigPlayButton = player.controlBar.getChild('BigPlayButton');
+		if (bigPlayButton) {
+			bigPlayButton.hide();
+		}
+	};
+
 	return (
 		<>
 			{/* <ReactPlayer
 				controls
 				url={`https://www.youtube-nocookie.com/embed/${
 					trailer?.split('?')[1].split('=')[1]
-				}?rel=0&loop=1`}
+				}?rel=0&loop=1&autoplay=1`}
 				muted
 				playing={true}
 				config={{
@@ -69,8 +109,8 @@ export default function Player() {
 						},
 					},
 				}}
-			></ReactPlayer> */}
-			<div class='background'>
+			/> */}
+			{/* <div class='background'>
 				<div class='videoWrapper'>
 					<header class='cover'></header>
 					<iframe
@@ -86,18 +126,48 @@ export default function Player() {
 
 					<footer class='cover'></footer>
 				</div>
-			</div>
+			</div> */}
 			{/* <div>Player</div> */}
 			{/* <div data-vjs-player> */}
-			{/* <video
-				// height={'100%'}
-				// width={'100%'}
-				className='video-js'
-				poster={`https://image.tmdb.org/t/p/w500${item.item.backdrop_path}`}
+			{/* <div
+				className='video-container'
+				data-vjs
+			>
+				<video
+					className='video-js'
+					poster={`https://image.tmdb.org/t/p/w500${item.item.backdrop_path}`}
+					controls
+					src={trailer}
+					// src={`http://127.0.0.1:3000/stream/get-video/${id}`}
+				></video>
+			</div> */}
+			<video
+				ref={ref}
+				id='my_video_1'
+				class='video-js vjs-default-skin'
+				width='640px'
+				height='267px'
 				controls
-				src={trailer}
-				// src={`http://127.0.0.1:3000/stream/get-video/${id}`}
-			></video> */}
+				preload='none'
+				poster='http://content.bitsontherun.com/thumbs/3XnJSIm4-480.jpg'
+				data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
+			>
+				<source
+					src='//content.bitsontherun.com/videos/bkaovAYt-52qL9xLP.mp4'
+					type='video/mp4'
+				/>
+				<source
+					src='//content.bitsontherun.com/videos/bkaovAYt-27m5HpIu.webm'
+					type='video/webm'
+				/>
+				<track
+					label='pt'
+					kind='captions'
+					srclang='pt'
+					src='http://playertest.longtailvideo.com/caption-files/sintel-en.srt'
+					default=''
+				/>
+			</video>
 			{list &&
 				list.map((part, i) => {
 					return (
@@ -193,3 +263,51 @@ export default function Player() {
 		// <videojs></videojs>
 	);
 }
+// import React, { useEffect, useRef } from 'react';
+// import { useLocation } from 'react-router-dom';
+// // import videojs from 'video.js'; // Import Video.js library
+// import videojs from 'video.js';
+// import 'video.js/dist/video-js.css';
+// import './Player.css';
+
+// const Player = () => {
+// 	const item = useLocation().state;
+// 	const ref = useRef(null);
+// useEffect(() => {
+// 	// console.log(ref);
+// 	// Initialize Video.js when the component mounts
+// 	const videoPlayer = videojs(ref.current.id, {
+// 		controls: true,
+// 		autoplay: false,
+// 		fluid: true,
+// 	});
+// 	{
+// 		/* <div class="vjs-play-progress vjs-slider-bar" aria-hidden="true" style="color: red;width: 22.94%;"><div class="vjs-time-tooltip" aria-hidden="true" style="right: -18px;">0:01</div></div> */
+// 	}
+// 	// Load the video source
+// 	videoPlayer.src('http://techslides.com/demos/sample-videos/small.webm');
+
+// 	// Cleanup when the component unmounts
+// 	// return () => {
+// 	// 	console.log(videoPlayer);
+// 	// 	if (videoPlayer) {
+// 	// 		videoPlayer.dispose(); // Dispose of the Video.js player
+// 	// 	}
+// 	// };
+// }, []);
+
+// 	return (
+// 		// <div className='video-container'>
+// 		// <video
+// 		// 	ref={ref}
+// 		// 	id='video-player' // Use 'id' to target the video element
+// 		// 	className='video-js'
+// 		// 	poster={`https://image.tmdb.org/t/p/w500${item.item.backdrop_path}`}
+// 		// 	controls
+// 		// ></video>
+
+// 		// </div>
+// 	);
+// };
+
+// export default Player;
