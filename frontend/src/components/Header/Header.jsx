@@ -58,6 +58,7 @@ export default function Header({
 	movieSwitchHandler,
 	queryHandler,
 	searchHandler,
+	setIsLoading,
 }) {
 	// console.log(movieSwitch);
 	return (
@@ -81,16 +82,24 @@ export default function Header({
 					<Navbar.Collapse id='basic-navbar-nav'>
 						<Nav className='me-auto'>
 							<Nav.Link
-								active={movieSwitch ? true : false}
-								onClick={() => movieSwitchHandler(true)}
+								active={movieSwitch == 'movie' ? true : false}
+								onClick={() => movieSwitchHandler('movie')}
 							>
 								Movies
 							</Nav.Link>
 							<Nav.Link
-								active={!movieSwitch ? true : false}
-								onClick={() => movieSwitchHandler(false)}
+								active={movieSwitch == 'tvshow' ? true : false}
+								onClick={() => movieSwitchHandler('tvshow')}
 							>
 								Tv Shows
+							</Nav.Link>
+							<Nav.Link
+								active={
+									movieSwitch == 'watchlist' ? true : false
+								}
+								onClick={() => movieSwitchHandler('watchlist')}
+							>
+								Watchlist
 							</Nav.Link>
 						</Nav>
 					</Navbar.Collapse>
@@ -107,6 +116,7 @@ export default function Header({
 			<SearchBar
 				searchHandler={searchHandler}
 				queryHandler={queryHandler}
+				setIsLoading={setIsLoading}
 			/>
 			<div className='header--user'>
 				<a href='/user'>

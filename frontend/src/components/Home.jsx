@@ -17,10 +17,8 @@ export default function Home() {
 	const [blackHeader, setBlackHeader] = useState(false);
 	const [movieSwitch, setMovieSwitch] = useState(
 		localStorage.getItem('movieSwitch')
-			? localStorage.getItem('movieSwitch') == 'true'
-				? true
-				: false
-			: true
+			? localStorage.getItem('movieSwitch')
+			: 'movie'
 	); // for switching movie and tv shows page
 	const hoverHandler = (item) => {
 		if (item.info) setHoveredItem(item);
@@ -32,7 +30,7 @@ export default function Home() {
 	};
 	const searchHandler = (setOrReset) => setSearch(setOrReset);
 	const queryHandler = (data) => {
-		// console.log([data]);
+		setIsLoading(false);
 		setSearchResult([data]);
 	};
 	useEffect(() => {
@@ -89,12 +87,12 @@ export default function Home() {
 		// 	// const data = await Tmdb.getSearchResults(query);
 		// 	// console.log(data);
 		// };
-		if (movieSwitch == true) {
+		if (movieSwitch == 'movie') {
 			// Tmdb.getTrailer()
 			// console.log();
 			setIsLoading(true);
 			loadAllMovies().then(() => setIsLoading(false));
-		} else {
+		} else if (movieSwitch == 'tvshow') {
 			setIsLoading(true);
 			loadAllTvShows().then(() => setIsLoading(false));
 		}
@@ -121,6 +119,7 @@ export default function Home() {
 	return (
 		<div className='page'>
 			<Header
+				setIsLoading={setIsLoading}
 				searchHandler={searchHandler}
 				queryHandler={queryHandler}
 				black={blackHeader}

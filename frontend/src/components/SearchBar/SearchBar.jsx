@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './SearchBar.css';
 import Tmdb from '../Tmdb';
-export default function SearchBar({ queryHandler, searchHandler }) {
+export default function SearchBar({
+	queryHandler,
+	searchHandler,
+	setIsLoading,
+}) {
 	const [query, setQuery] = useState('');
 	const [isInputVisible, setIsInputVisible] = useState(false);
 	useEffect(() => {
 		if (query.length != 0) {
 			searchHandler(true);
+			setIsLoading(true);
 			Tmdb.getSearchResults(query).then((data) => queryHandler(data));
 		} else {
 			setTimeout(() => {
