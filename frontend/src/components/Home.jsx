@@ -6,8 +6,11 @@ import MovieRow from './MovieRow/MovieRow';
 import FeatureMovie from './FeaturedMovie/FeatureMovie';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
+import { useLocation } from 'react-router-dom';
 export default function Home() {
 	// const [query, setQuery] = useState('');
+	const username = useLocation().state.username;
+	// console.log(username);
 	const [hoveredItem, setHoveredItem] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [searchResult, setSearchResult] = useState([]);

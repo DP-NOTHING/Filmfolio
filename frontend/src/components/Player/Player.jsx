@@ -11,6 +11,7 @@ import 'video.js/dist/video-js.min.css';
 import './Player.css';
 import logo from '../../assets/logo2.png';
 import Button from 'react-bootstrap/Button';
+import Toast from 'react-bootstrap/Toast';
 export default function Player() {
 	// getting id from my current locations
 	const uploadRef = useRef(null);
@@ -26,6 +27,11 @@ export default function Player() {
 	const [poster, setPoster] = useState('');
 	const item = useLocation().state;
 	const player = useRef(null);
+	const [showUploaded, setShowUploaded] = useState(false);
+	const [showDownloaded, setShowDownloaded] = useState(false);
+	const uploadToastRef = useRef(null);
+	const downloadToastRef = useRef(null);
+
 	const getList = async () => {
 		// console.log(item);
 		if (item.item.first_air_date) {
@@ -102,14 +108,25 @@ export default function Player() {
 					}
 				)
 				.then(function (response) {
-					setIsLoading(false);
+					if (response.status == 200) {
+						setIsLoading(false);
+						setShowUploaded(true);
+					}
 					// console.log(
 					// 	response.data,
 					// 	'dddddddddddddddddddddddddddddddd'
 					// );
 				})
 				.catch(function (error) {
-					console.error(error, 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+					// if (uploadToastRef.current) {
+					// 	// Modify the content of the Toast directly
+					// 	uploadToastRef.current.querySelector(
+					// 		'.toast-body'
+					// 	).textContent = 'uploading not successful';
+					// }
+					setIsLoading(false);
+					// setShowUploaded(true);
+					// console.error(error, 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
 				});
 		}
 	};
@@ -124,11 +141,24 @@ export default function Player() {
 				responseType: 'blob', // Set the response type to 'blob'
 			})
 			.then(function (response) {
-				fileDownload(response.data, 'test.mp4');
-				setIsLoading(false);
+				console.log(response);
+				if (response.status == 200) {
+					fileDownload(response.data, 'test.mp4');
+					setIsLoading(false);
+					setShowDownloaded(true);
+				} else {
+					// if (downloadToastRef.current) {
+					// 	// Modify the content of the Toast directly
+					// 	downloadToastRef.current.querySelector(
+					// 		'.toast-body'
+					// 	).textContent = 'download not successful';
+					// }
+					setIsLoading(false);
+					// setShowDownloaded(true);
+				}
 			})
 			.catch(function (error) {
-				console.error(error);
+				setIsLoading(false);
 			});
 	};
 	const trailerHandler = () => {};
@@ -177,6 +207,49 @@ export default function Player() {
 				</div>
 			)}
 			<div style={{ display: isLoading ? 'none' : 'block' }}>
+				<Toast
+					ref={uploadToastRef}
+					style={{
+						position: 'absolute',
+						top: '9%',
+						left: '3%',
+						zIndex: '100',
+					}}
+					data-bs-theme='dark'
+					bg='success'
+					show={showUploaded}
+					onClose={() => {
+						setShowUploaded(false);
+					}}
+				>
+					<Toast.Header>
+						<strong className='me-auto'>FILMFOLIO</strong>
+					</Toast.Header>
+					<Toast.Body>
+						Woohoo, video uploaded successfully! <br />
+						Thank you for the contribution !
+					</Toast.Body>
+				</Toast>
+				<Toast
+					ref={downloadToastRef}
+					style={{
+						position: 'absolute',
+						top: '9%',
+						right: '3%',
+						zIndex: '100',
+					}}
+					data-bs-theme='dark'
+					bg='danger'
+					show={showDownloaded}
+					onClose={() => {
+						setShowDownloaded(false);
+					}}
+				>
+					<Toast.Header>
+						<strong className='me-auto'>FILMFOLIO</strong>
+					</Toast.Header>
+					<Toast.Body>video downloaded successfully!</Toast.Body>
+				</Toast>
 				<div
 					data-vjs-player='true'
 					// data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
