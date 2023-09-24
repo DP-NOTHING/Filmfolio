@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import fileDownload from 'js-file-download';
+import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import videojs from 'video.js';
 import Tmdb from '../Tmdb/index';
-// import ReactPlayer from 'react-player';
-// import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Accordion from 'react-bootstrap/Accordion';
 import { useRef } from 'react';
@@ -11,13 +11,12 @@ import 'video.js/dist/video-js.min.css';
 import './Player.css';
 import logo from '../../assets/logo2.png';
 import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-
 export default function Player() {
 	// getting id from my current locations
+	const uploadRef = useRef(null);
+	const formRef = useRef(null);
 	const [isLoading, setIsLoading] = useState(false);
+	const [apiId, setApiId] = useState(null);
 	const id = useLocation().pathname.split('/')[2];
 	const [list, setList] = useState(null);
 	const [data, setData] = useState(null);
@@ -50,11 +49,14 @@ export default function Player() {
 					query = '';
 				}
 			}
-			// console.log(data);
+			// console.log(main);
 			setTrailer(data?.trailer);
 			setList(main);
 		} else {
 			const data = await Tmdb.getMovieInfo(item.item.id, 'movie');
+			setApiId(
+				item.item.name + '-' + item.item.id + '-' + item.item.media_type
+			);
 			setTrailer(data?.trailer);
 			setData(data.info);
 		}
@@ -67,7 +69,7 @@ export default function Player() {
 				autoplay: false,
 				fluid: true,
 			});
-			videoPlayer.src('https://vjs.zencdn.net/v/oceans.mp4');
+			// videoPlayer.src(``);
 			if (!isPlayerInitialized) {
 				// Initialize the Video.js player
 				const videoPlayer = videojs(player.current, {
@@ -75,12 +77,63 @@ export default function Player() {
 					autoplay: false,
 					fluid: true,
 				});
-				videoPlayer.src('https://vjs.zencdn.net/v/oceans.mp4');
+				videoPlayer.src(
+					`http://127.0.0.1:3000/stream/get-video/${apiId}`
+				);
 				setIsPlayerInitialized(true);
 			}
 			setIsLoading(false);
 		});
 	}, []);
+	const handleFileUpload = (e) => {
+		const selectedFile = e.target.files[0];
+		if (selectedFile) {
+			const formData = new FormData();
+			formData.append('video', selectedFile);
+			setIsLoading(true);
+			axios
+				.post(
+					`http://127.0.0.1:3000/upload/upload-video/${apiId}`,
+					formData,
+					{
+						headers: {
+							'Content-Type': 'multipart/form-data;',
+						},
+					}
+				)
+				.then(function (response) {
+					setIsLoading(false);
+					// console.log(
+					// 	response.data,
+					// 	'dddddddddddddddddddddddddddddddd'
+					// );
+				})
+				.catch(function (error) {
+					console.error(error, 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+				});
+		}
+	};
+
+	const uploadHandler = () => {
+		uploadRef.current.click();
+	};
+	const downloadHandler = () => {
+		setIsLoading(true);
+		axios
+			.get(`http://127.0.0.1:3000/stream/get-video/${apiId}/download`, {
+				responseType: 'blob', // Set the response type to 'blob'
+			})
+			.then(function (response) {
+				fileDownload(response.data, 'test.mp4');
+				setIsLoading(false);
+			})
+			.catch(function (error) {
+				console.error(error);
+			});
+	};
+	const trailerHandler = () => {};
+	const watchlistHandler = () => {};
+
 	return (
 		<div>
 			<header className='black'>
@@ -133,15 +186,18 @@ export default function Player() {
 					}}
 				>
 					<video
+						src={`http://127.0.0.1:3000/stream/get-video/${apiId}`}
 						ref={player}
 						className='video-js vjs-default-skin'
-						// id='my_video_1'
-						// className='video-js vjs-default-skin'
 						width='640px'
 						height='267px'
 						controls
 						preload='none'
-						poster={`https://image.tmdb.org/t/p/w1280${item.item.backdrop_path}`}
+						poster={
+							item.item.backdrop_path
+								? `https://image.tmdb.org/t/p/w1280${item.item.backdrop_path}`
+								: 'https://cdn-icons-png.flaticon.com/512/3163/3163508.png'
+						}
 						data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
 					></video>
 				</div>
@@ -159,6 +215,7 @@ export default function Player() {
 							style={{ color: 'white', border: 'none' }}
 							variant='outline-danger'
 							className='p-2 m-4'
+							onClick={uploadHandler}
 							onMouseOver={(e) =>
 								(e.currentTarget.style.color = 'black')
 							}
@@ -174,10 +231,27 @@ export default function Player() {
 								alt=''
 							/>
 						</Button>
+						{/* getting input field to get file */}
+						{/* <form
+							ref={formRef}
+							style={{ display: 'none' }}
+							method='post'
+							encType='multipart/form-data'
+							action='http://127.0.0.1:3000/upload/upload-video'
+						> */}
+						<input
+							ref={uploadRef}
+							type='file'
+							accept='video/*'
+							style={{ display: 'none' }}
+							onChange={handleFileUpload}
+						/>
+						{/* </form> */}
 						<Button
 							style={{ color: 'white', border: 'none' }}
 							variant='outline-danger'
 							className='p-2 m-4'
+							onClick={downloadHandler}
 							onMouseOver={(e) =>
 								(e.currentTarget.style.color = 'black')
 							}
@@ -197,6 +271,7 @@ export default function Player() {
 							style={{ color: 'white', border: 'none' }}
 							variant='outline-danger'
 							className='p-2 m-4'
+							onClick={watchlistHandler}
 							onMouseOver={(e) =>
 								(e.currentTarget.style.color = 'black')
 							}
@@ -218,6 +293,7 @@ export default function Player() {
 						className='p-2 m-4'
 						style={{ border: 'none' }}
 						variant='outline-light'
+						onClick={trailerHandler}
 						onMouseOver={(e) =>
 							(e.currentTarget.style.color = 'black')
 						}
@@ -242,27 +318,62 @@ export default function Player() {
 								key={i}
 							>
 								{part.map((season) => {
-									return (
+									return !season.length ? (
+										<></>
+									) : (
 										<Accordion.Item
 											style={{ marginTop: '0.7vh' }}
-											eventKey={`${season[0].season_number}`}
+											eventKey={
+												season[0]
+													? `${season[0].season_number}`
+													: new Date().toString()
+											}
 										>
 											<Accordion.Header>
-												Season {season[0].season_number}
+												Season{' '}
+												{season[0]
+													? `${season[0].season_number}`
+													: new Date().toString()}
 											</Accordion.Header>
 
 											<Accordion.Body
-												key={season[0].season_number}
+												key={
+													season[0]
+														? `${season[0].season_number}`
+														: new Date().toString()
+												}
 											>
 												<ListGroup>
 													{season.map(
 														(episode, i) => {
-															// console.log(episode);
+															// console.log(epis);
 															return (
 																<ListGroup.Item
 																	variant='dark'
 																	action
-																	key={`${season[0].season_number}-${episode.episode_number}`}
+																	onClick={() => {
+																		setApiId(
+																			item
+																				.item
+																				.name +
+																				'-' +
+																				item
+																					.item
+																					.id +
+																				'-' +
+																				item
+																					.item
+																					.media_type +
+																				'-' +
+																				episode.id
+																		);
+																	}}
+																	key={
+																		season[0]
+																			.season_number
+																			? `${season[0].season_number}-${episode.episode_number}`
+																			: new Date.toString()
+																	}
 																>
 																	<h4>
 																		Episode
