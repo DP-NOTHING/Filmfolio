@@ -28,6 +28,7 @@ export default function Player() {
 	const item = useLocation().state;
 	const player = useRef(null);
 	const getList = async () => {
+		// console.log(item);
 		if (item.item.first_air_date) {
 			let query = '';
 			const main = [];
@@ -128,7 +129,7 @@ export default function Player() {
 					// data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
 					// poster='http://content.bitsontherun.com/thumbs/3XnJSIm4-480.jpg'
 					style={{
-						marginTop: '1vh',
+						marginTop: '7vh',
 					}}
 				>
 					<video
@@ -144,17 +145,106 @@ export default function Player() {
 						data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
 					></video>
 				</div>
+				<div
+					style={{
+						marginLeft: '5vw',
+						marginRight: '5vw',
+						width: '90vw',
+						display: 'flex',
+						justifyContent: 'space-between', // Aligns items at the start and end of the row
+					}}
+				>
+					<div>
+						<Button
+							style={{ color: 'white', border: 'none' }}
+							variant='outline-danger'
+							className='p-2 m-4'
+							onMouseOver={(e) =>
+								(e.currentTarget.style.color = 'black')
+							}
+							onMouseOut={(e) =>
+								(e.currentTarget.style.color = 'white')
+							}
+						>
+							upload{' '}
+							<img
+								height={'32px'}
+								width={'32px'}
+								src='https://cdn1.iconfinder.com/data/icons/web-seo-5/91/SEODevelopment__Marketing_063-512.png'
+								alt=''
+							/>
+						</Button>
+						<Button
+							style={{ color: 'white', border: 'none' }}
+							variant='outline-danger'
+							className='p-2 m-4'
+							onMouseOver={(e) =>
+								(e.currentTarget.style.color = 'black')
+							}
+							onMouseOut={(e) =>
+								(e.currentTarget.style.color = 'white')
+							}
+						>
+							download{' '}
+							<img
+								height={'32px'}
+								width={'32px'}
+								src='https://cdn4.iconfinder.com/data/icons/e-learning-color/64/download-video-material-512.png'
+								alt=''
+							/>
+						</Button>
+						<Button
+							style={{ color: 'white', border: 'none' }}
+							variant='outline-danger'
+							className='p-2 m-4'
+							onMouseOver={(e) =>
+								(e.currentTarget.style.color = 'black')
+							}
+							onMouseOut={(e) =>
+								(e.currentTarget.style.color = 'white')
+							}
+						>
+							add to watchlist{' '}
+							<img
+								height={'32px'}
+								width={'32px'}
+								src='https://cdn0.iconfinder.com/data/icons/video-player-4/100/video_movie_clip_player-09-512.png'
+								alt=''
+							/>
+						</Button>
+					</div>
+					<Button
+						// className='mr-2'
+						className='p-2 m-4'
+						style={{ border: 'none' }}
+						variant='outline-light'
+						onMouseOver={(e) =>
+							(e.currentTarget.style.color = 'black')
+						}
+						onMouseOut={(e) =>
+							(e.currentTarget.style.color = 'white')
+						}
+					>
+						<img
+							height={'32px'}
+							width={'32px'}
+							src='https://cdn4.iconfinder.com/data/icons/cinema-157/496/movie-player-video-media-watch-512.png'
+							alt=''
+						/>{' '}
+						watch trailer
+					</Button>
+				</div>
 				{list &&
 					list.map((part, i) => {
 						return (
 							<Accordion
-								style={{ marginTop: '5vh' }}
 								data-bs-theme='dark'
 								key={i}
 							>
 								{part.map((season) => {
 									return (
 										<Accordion.Item
+											style={{ marginTop: '0.7vh' }}
 											eventKey={`${season[0].season_number}`}
 										>
 											<Accordion.Header>
@@ -235,7 +325,7 @@ export default function Player() {
 						);
 					})}
 				{data && (
-					<div>
+					<div style={{ marginTop: '0.7vh' }}>
 						<h3>Title: {data.original_title}</h3>
 						<span>Tag: {data.tagline}</span>
 						<p>Overview: {data.overview}</p>
