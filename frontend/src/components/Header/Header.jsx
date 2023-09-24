@@ -76,6 +76,7 @@ export default function Header({
 				bg='transparent'
 				variant='dark'
 				expand='lg'
+				style={{ marginRight: 'auto' }}
 			>
 				<Container>
 					<Navbar.Toggle aria-controls='basic-navbar-nav' />
@@ -83,36 +84,82 @@ export default function Header({
 						<Nav className='me-auto'>
 							<Nav.Link
 								active={movieSwitch == 'movie' ? true : false}
-								onClick={() => movieSwitchHandler('movie')}
+								onClick={() =>
+									movieSwitch != 'movie'
+										? movieSwitchHandler('movie')
+										: null
+								}
 							>
-								Movies
+								Movies{' '}
+								{movieSwitch == 'movie' ? (
+									<img
+										src='https://cdn3.iconfinder.com/data/icons/netflix-6/64/25_Documentary_camera_video_movie_film-256.png'
+										alt='Movie Icon'
+										style={{
+											width: '30px',
+											height: '28px',
+											marginTop: '-4px',
+											transition: 'all 3s', // Add a transition for all properties
+										}} // Adjust the size as needed
+									/>
+								) : (
+									''
+								)}
 							</Nav.Link>
 							<Nav.Link
 								active={movieSwitch == 'tvshow' ? true : false}
-								onClick={() => movieSwitchHandler('tvshow')}
+								onClick={() =>
+									movieSwitch != 'tvshow'
+										? movieSwitchHandler('tvshow')
+										: null
+								}
 							>
-								Tv Shows
+								Tv Shows{' '}
+								{movieSwitch == 'tvshow' ? (
+									<img
+										src='https://cdn3.iconfinder.com/data/icons/netflix-6/64/17_Tv_Show_television_old_classic-64.png'
+										alt='Tvshow Icon'
+										style={{
+											width: '30px',
+											height: '28px',
+											marginTop: '-4px',
+											transition: 'all 3s', // Add a transition for all properties
+										}} // Adjust the size as needed
+									/>
+								) : (
+									''
+								)}
 							</Nav.Link>
 							<Nav.Link
 								active={
 									movieSwitch == 'watchlist' ? true : false
 								}
-								onClick={() => movieSwitchHandler('watchlist')}
+								onClick={() =>
+									movieSwitch != 'watchlist'
+										? movieSwitchHandler('watchlist')
+										: null
+								}
 							>
-								Watchlist
+								Watchlist{' '}
+								{movieSwitch == 'watchlist' ? (
+									<img
+										src='https://cdn3.iconfinder.com/data/icons/netflix-5/64/26_3D_Animation_glasses_movie_film-256.png'
+										alt='Watchlist Icon'
+										style={{
+											width: '30px',
+											height: '28px',
+											marginTop: '-4px',
+											transition: 'all 3s', // Add a transition for all properties
+										}} // Adjust the size as needed
+									/>
+								) : (
+									''
+								)}
 							</Nav.Link>
 						</Nav>
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>
-			{/* <MaterialUISwitch onChange={() => movieSwitchHandler()} /> */}
-			{/* <div style={{ width: 80, fontWeight: 'bold', fontSize: 20 }}>
-				{movieSwitch == true ? (
-					<span>movie</span>
-				) : (
-					<span>tv shows</span>
-				)}
-			</div> */}
 			<SearchBar
 				searchHandler={searchHandler}
 				queryHandler={queryHandler}

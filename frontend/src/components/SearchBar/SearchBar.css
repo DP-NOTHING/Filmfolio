@@ -2,6 +2,8 @@
 	display: flex;
 	align-items: center;
 	width: 205px;
+	/* margin-left: auto; */
+	margin-right: auto;
 }
 .search-bar {
 	height: 35px;
