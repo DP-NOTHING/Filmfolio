@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const session = require('express-session');
+const cors = require('cors');
 const { connect } = require('./db/connection');
 const loginRouter = require('./login/login').router;
 const signupRouter = require('./login/signup').router;
@@ -12,6 +13,7 @@ const express = require('express');
 const app = express();
 dotenv.config({ path: './.env' });
 app.set('trust proxy', 1); // trust first proxy
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(
@@ -114,6 +116,7 @@ app.all('/test', async (req, res) => {
 });
 app.listen(process.env.PORT, async () => {
 	const connection = await connect();
+	console.log('connected');
 	console.log(
 		`server is up and running at http://127.0.0.1:${process.env.PORT}`
 	);

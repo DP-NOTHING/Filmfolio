@@ -29,8 +29,12 @@ const TestSchema = new mongoose.Schema({
 		default: null,
 	},
 });
+const IdMappingSchema = new mongoose.Schema({
+	apiId: String,
+	uploadedId: String,
+});
 const User = mongoose.model('User', UserSchema);
 const Movie = mongoose.model('Movie', MovieSchema);
 const Test = mongoose.model('Test', TestSchema);
-// console.log(User);
-module.exports = { User, Movie, Test };
+const IdMapping = mongoose.model('IdMapping', IdMappingSchema);
+module.exports = { User, Movie, Test, IdMapping };
