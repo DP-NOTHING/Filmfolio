@@ -161,7 +161,7 @@ export default function Player() {
 				setIsLoading(false);
 			});
 	};
-	const trailerHandler = () => {};
+	// const trailerHandler = () => {};
 	const watchlistHandler = () => {};
 
 	return (
@@ -361,27 +361,32 @@ export default function Player() {
 							/>
 						</Button>
 					</div>
-					<Button
-						// className='mr-2'
-						className='p-2 m-4'
-						style={{ border: 'none' }}
-						variant='outline-light'
-						onClick={trailerHandler}
-						onMouseOver={(e) =>
-							(e.currentTarget.style.color = 'black')
-						}
-						onMouseOut={(e) =>
-							(e.currentTarget.style.color = 'white')
-						}
+					<a
+						href={trailer}
+						target='_blank'
 					>
-						<img
-							height={'32px'}
-							width={'32px'}
-							src='https://cdn4.iconfinder.com/data/icons/cinema-157/496/movie-player-video-media-watch-512.png'
-							alt=''
-						/>{' '}
-						watch trailer
-					</Button>
+						<Button
+							// className='mr-2'
+							className='p-2 m-4'
+							style={{ border: 'none' }}
+							variant='outline-light'
+							// onClick={trailerHandler}
+							onMouseOver={(e) =>
+								(e.currentTarget.style.color = 'black')
+							}
+							onMouseOut={(e) =>
+								(e.currentTarget.style.color = 'white')
+							}
+						>
+							<img
+								height={'32px'}
+								width={'32px'}
+								src='https://cdn4.iconfinder.com/data/icons/cinema-157/496/movie-player-video-media-watch-512.png'
+								alt=''
+							/>{' '}
+							watch trailer
+						</Button>
+					</a>
 				</div>
 				{list &&
 					list.map((part, i) => {

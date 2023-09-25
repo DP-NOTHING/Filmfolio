@@ -9,7 +9,10 @@ import Footer from './Footer/Footer';
 import { useLocation } from 'react-router-dom';
 export default function Home() {
 	// const [query, setQuery] = useState('');
-	const username = useLocation().state.username;
+	const state = useLocation().state;
+	const username = state?.username
+		? state?.username
+		: localStorage.getItem('username');
 	// console.log(username);
 	const [hoveredItem, setHoveredItem] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);

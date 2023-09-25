@@ -7,7 +7,9 @@ import SearchBar from '../SearchBar/SearchBar';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-
+import Dropdown from 'react-bootstrap/Dropdown';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 // 	width: 70,
 // 	height: 32,
@@ -60,6 +62,14 @@ export default function Header({
 	searchHandler,
 	setIsLoading,
 }) {
+	const Navigate = useNavigate();
+	const logout = (e) => {
+		e.preventDefault();
+		axios.post('http://127.0.0.1:3000/logout/').then(() => {
+			localStorage.removeItem('username');
+			Navigate('/sign-in');
+		});
+	};
 	// console.log(movieSwitch);
 	return (
 		// <h1>hi</h1>
@@ -165,14 +175,27 @@ export default function Header({
 				queryHandler={queryHandler}
 				setIsLoading={setIsLoading}
 			/>
-			<div className='header--user'>
-				<a href='/user'>
+			<Dropdown
+				className='d-inline mx-2'
+				variant='dark'
+				// style={{ visibility: 'hidden' }}
+			>
+				<Dropdown.Toggle
+					id='dropdown-autoclose-true'
+					className='header--user'
+					style={{ background: 'transparent', border: 'none' }}
+				>
 					<img
 						src='https://i.pinimg.com/originals/b6/77/cd/b677cd1cde292f261166533d6fe75872.png'
 						alt=''
 					/>
-				</a>
-			</div>
+				</Dropdown.Toggle>
+				<Dropdown.Menu variant='dark'>
+					<Dropdown.Item onClick={logout}>logout</Dropdown.Item>
+					{/* <Dropdown.Item href='#'>Menu Item</Dropdown.Item> */}
+					{/* <Dropdown.Item href='#'>Menu Item</Dropdown.Item> */}
+				</Dropdown.Menu>
+			</Dropdown>
 		</header>
 	);
 }
