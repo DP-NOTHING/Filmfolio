@@ -55,21 +55,20 @@ export default function Player() {
 					query = '';
 				}
 			}
-			// console.log(main);
 			setTrailer(data?.trailer);
 			setList(main);
+			return null;
 		} else {
 			const data = await Tmdb.getMovieInfo(item.item.id, 'movie');
-			setApiId(
-				item.item.name + '-' + item.item.id + '-' + item.item.media_type
-			);
+			setApiId(data.info.original_title + '-' + data.info.id + '-movie');
 			setTrailer(data?.trailer);
 			setData(data.info);
+			return data.info.original_title + '-' + data.info.id + '-movie';
 		}
 	};
 	useEffect(() => {
 		setIsLoading(true);
-		getList().then(() => {
+		getList().then((movieApiId) => {
 			const videoPlayer = videojs(player.current, {
 				controls: true,
 				autoplay: false,
@@ -78,14 +77,16 @@ export default function Player() {
 			// videoPlayer.src(``);
 			if (!isPlayerInitialized) {
 				// Initialize the Video.js player
+				// console.log(movieApiId);
+
 				const videoPlayer = videojs(player.current, {
 					controls: true,
 					autoplay: false,
 					fluid: true,
 				});
-				videoPlayer.src(
-					`http://127.0.0.1:3000/stream/get-video/${apiId}`
-				);
+				!movieApiId
+					? (player.current.src = `http://127.0.0.1:3000/stream/get-video/${apiId}`)
+					: (player.current.src = `http://127.0.0.1:3000/stream/get-video/${movieApiId}`);
 				setIsPlayerInitialized(true);
 			}
 			setIsLoading(false);
@@ -252,7 +253,7 @@ export default function Player() {
 				</Toast>
 				<div
 					data-vjs-player='true'
-					// data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
+					data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
 					// poster='http://content.bitsontherun.com/thumbs/3XnJSIm4-480.jpg'
 					style={{
 						marginTop: '7vh',
