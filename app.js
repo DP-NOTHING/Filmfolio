@@ -2,17 +2,23 @@ const dotenv = require('dotenv');
 const session = require('express-session');
 const cors = require('cors');
 const { connect } = require('./db/connection');
+
+
 const loginRouter = require('./login/login').router;
 const signupRouter = require('./login/signup').router;
 const forgetRouter = require('./login/forgetPassword').router;
 const logoutRouter = require('./login/logout').router;
-const uploadAndStreamingRouter =
-	require('./uploading_and_streaming/main').router;
+const addWatchlistRouter=require('./login/addwatchlist').router;
+const uploadAndStreamingRouter =require('./uploading_and_streaming/main').router;
 // const { upload } = require('./test_upload/test');
+
+
 const express = require('express');
 const app = express();
 dotenv.config({ path: './.env' });
 app.set('trust proxy', 1); // trust first proxy
+
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
@@ -24,16 +30,19 @@ app.use(
 		saveUninitialized: true,
 		cookie: {
 			secure: false, // This will only work if you have https enabled!
-			maxAge: 60000, // 1 min
+			maxAge: 120000, // 1 min
+			// expires:new Date(Date.now()+3600000),	
 		},
 	})
 );
+
 app.use('/login', loginRouter);
 app.use('/forget', forgetRouter);
 app.use('/signup', signupRouter);
 app.use('/logout', logoutRouter);
 app.use('/upload', uploadAndStreamingRouter);
 app.use('/stream', uploadAndStreamingRouter);
+app.use('/addwatchlist',addWatchlistRouter);
 // verifying whether user is already logged in or not
 // app.use((req, res, next) => {
 // 	if (req.session.username) {

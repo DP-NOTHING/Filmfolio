@@ -3,7 +3,8 @@ const app = express();
 const router = express.Router();
 router.use(express.json());
 router.route('/').all((req, res) => {
-	// console.log(req.body);
+	// //console.log(req.body);
+	// req.session.destroy();
 	req.session.destroy(function (err) {
 		console.log('Destroyed session');
 	});

@@ -17,8 +17,13 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		require: true,
 	},
-	watchlist: {
-		type: [MovieSchema],
+	moviewatchlist: {
+		type: [String],
+		require: false,
+		default: null,
+	},
+	tvwatchlist: {
+		type: [String],
 		require: false,
 		default: null,
 	},
