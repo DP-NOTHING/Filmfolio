@@ -12,6 +12,7 @@ import './Player.css';
 import logo from '../../assets/logo2.png';
 import Button from 'react-bootstrap/Button';
 import Toast from 'react-bootstrap/Toast';
+import Header from '../Header/Header';
 export default function Player() {
 	// getting id from my current locations
 	const uploadRef = useRef(null);
@@ -33,7 +34,6 @@ export default function Player() {
 	const downloadToastRef = useRef(null);
 
 	const getList = async () => {
-		// console.log(item);
 		if (item.item.first_air_date) {
 			let query = '';
 			const main = [];
@@ -55,20 +55,21 @@ export default function Player() {
 					query = '';
 				}
 			}
+			// console.log(main);
 			setTrailer(data?.trailer);
 			setList(main);
-			return null;
 		} else {
 			const data = await Tmdb.getMovieInfo(item.item.id, 'movie');
-			setApiId(data.info.original_title + '-' + data.info.id + '-movie');
+			setApiId(
+				item.item.name + '-' + item.item.id + '-' + item.item.media_type
+			);
 			setTrailer(data?.trailer);
 			setData(data.info);
-			return data.info.original_title + '-' + data.info.id + '-movie';
 		}
 	};
 	useEffect(() => {
 		setIsLoading(true);
-		getList().then((movieApiId) => {
+		getList().then(() => {
 			const videoPlayer = videojs(player.current, {
 				controls: true,
 				autoplay: false,
@@ -77,16 +78,14 @@ export default function Player() {
 			// videoPlayer.src(``);
 			if (!isPlayerInitialized) {
 				// Initialize the Video.js player
-				// console.log(movieApiId);
-
 				const videoPlayer = videojs(player.current, {
 					controls: true,
 					autoplay: false,
 					fluid: true,
 				});
-				!movieApiId
-					? (player.current.src = `http://127.0.0.1:3000/stream/get-video/${apiId}`)
-					: (player.current.src = `http://127.0.0.1:3000/stream/get-video/${movieApiId}`);
+				videoPlayer.src(
+					`http://127.0.0.1:3000/stream/get-video/${apiId}`
+				);
 				setIsPlayerInitialized(true);
 			}
 			setIsLoading(false);
@@ -163,7 +162,20 @@ export default function Player() {
 			});
 	};
 	// const trailerHandler = () => {};
-	const watchlistHandler = () => {};
+	const watchlistHandler = () => {
+		console.log('hiwatchlistahandler');
+		const username = localStorage.getItem('username');
+		console.log(id);
+		let type;
+		if (item.item.first_air_date) {
+			type='tv';
+		}
+		else{
+			type="movie";
+		}
+		axios.post(`http://127.0.0.1:3000/addwatchlist/${id}`,{"name":"abc",
+	"username":username,"type":type});
+	};
 
 	return (
 		<div>
@@ -176,20 +188,7 @@ export default function Player() {
 						/>
 					</a>
 				</div>
-				<Button
-					onClick={() => {
-						Navigate('/home');
-					}}
-					variant='outline-dark'
-					style={{ marginRight: 'auto' }}
-				>
-					<img
-						src='https://cdn3.iconfinder.com/data/icons/netflix-6/64/02_Home_house_front_page_website-256.png'
-						height={'30px'}
-						width={'28px'}
-						alt=''
-					/>
-				</Button>
+				<div>{item.item.name}</div>
 				<div className='header--user'>
 					<a href='/user'>
 						<img
@@ -251,9 +250,10 @@ export default function Player() {
 					</Toast.Header>
 					<Toast.Body>video downloaded successfully!</Toast.Body>
 				</Toast>
+				
 				<div
 					data-vjs-player='true'
-					data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
+					// data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
 					// poster='http://content.bitsontherun.com/thumbs/3XnJSIm4-480.jpg'
 					style={{
 						marginTop: '7vh',
@@ -516,8 +516,8 @@ export default function Player() {
 					})}
 				{data && (
 					<div style={{ marginTop: '0.7vh' }}>
-						<h3>Title: {data.original_title}</h3>
-						<span>Tag: {data.tagline}</span>
+						<h3> {data.original_title}</h3>
+						<span> {data.tagline}</span>
 						<p>Overview: {data.overview}</p>
 						<span>duration: {data.runtime} minutes</span>
 					</div>

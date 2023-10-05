@@ -4,7 +4,9 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import RowItem from '../RowItem/RowItem';
 
-export default function MovieRow({ title, items, hoverHandler }) {
+//;;;;
+
+export default function MovieRow({ title, items, hoverHandler,delwatchlist,iswatchlist}) {
 	const [scrollX, setScrollX] = useState(0);
 	const handleLeftArrow = () => {
 		let x = scrollX + Math.round(window.innerWidth / 2);
@@ -47,6 +49,7 @@ export default function MovieRow({ title, items, hoverHandler }) {
 	// };
 
 	return (
+		
 		<div
 			className='movieRow'
 			onWheel={handleScroll}
@@ -77,6 +80,7 @@ export default function MovieRow({ title, items, hoverHandler }) {
 						transition: 'transform 0.5s ease',
 					}}
 				>
+					
 					{items.results.length > 0 &&
 						items.results
 							.filter((item) => item?.media_type !== 'person')
@@ -99,11 +103,14 @@ export default function MovieRow({ title, items, hoverHandler }) {
 											? `https://image.tmdb.org/t/p/w300${item.poster_path}`
 											: null
 									}
+									delwatchlist={delwatchlist}
+									iswatchlist={iswatchlist}
 									alt={
 										item.original_title
 											? item.original_title
 											: item.name
 									}
+
 								/>
 								// </div>
 							))}

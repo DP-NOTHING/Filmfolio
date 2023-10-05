@@ -3,6 +3,7 @@ import './FeatureMovie.css';
 import ReactPlayer from 'react-player';
 import Tmdb from '../Tmdb';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 export default function FeatureMovie({ item: { info, trailer } }) {
 	trailer = `https://www.youtube-nocookie.com/embed/${
 		trailer?.split('?')[1].split('=')[1]
@@ -48,6 +49,22 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 	// if (description.length > 200) {
 	// 	description = description.substring(0, 200) + '...';
 	// }
+	const watchlistHandler = () => {
+		console.log('hiwatchlistahandler');
+		const username = localStorage.getItem('username');
+		console.log(info);
+		console.log("[[[[[[[[[[");
+		let type;
+		if (info.first_air_date) {
+			type='tv';
+		}
+		else{
+			type="movie";
+		}
+		axios.post(`http://127.0.0.1:3000/addwatchlist/${info.id}`,{"name":"abc",
+	"username":username,"type":type});
+	};
+
 	useEffect(() => {
 		setVideoState(false);
 	}, [trailer]);
@@ -202,7 +219,8 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 						</a>
 						<a
 							className='featured--mylistbutton'
-							href={`/list/add/${info?.id}`}
+							onClick={watchlistHandler}
+							style={{ cursor: 'pointer' }}
 						>
 							+Add
 						</a>

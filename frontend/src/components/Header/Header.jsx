@@ -101,7 +101,7 @@ export default function Header({
 								}
 							>
 								Movies{' '}
-								{movieSwitch == 'movie' ? (
+								{/* {movieSwitch == 'movie' ? (
 									<img
 										src='https://cdn3.iconfinder.com/data/icons/netflix-6/64/25_Documentary_camera_video_movie_film-256.png'
 										alt='Movie Icon'
@@ -114,7 +114,7 @@ export default function Header({
 									/>
 								) : (
 									''
-								)}
+								)} */}
 							</Nav.Link>
 							<Nav.Link
 								active={movieSwitch == 'tvshow' ? true : false}
@@ -125,7 +125,7 @@ export default function Header({
 								}
 							>
 								Tv Shows{' '}
-								{movieSwitch == 'tvshow' ? (
+								{/* {movieSwitch == 'tvshow' ? (
 									<img
 										src='https://cdn3.iconfinder.com/data/icons/netflix-6/64/17_Tv_Show_television_old_classic-64.png'
 										alt='Tvshow Icon'
@@ -138,7 +138,7 @@ export default function Header({
 									/>
 								) : (
 									''
-								)}
+								)} */}
 							</Nav.Link>
 							<Nav.Link
 								active={
@@ -150,8 +150,8 @@ export default function Header({
 										: null
 								}
 							>
-								Watchlist{' '}
-								{movieSwitch == 'watchlist' ? (
+								Watchlist
+								{/* {movieSwitch == 'watchlist' ? (
 									<img
 										src='https://cdn3.iconfinder.com/data/icons/netflix-5/64/26_3D_Animation_glasses_movie_film-256.png'
 										alt='Watchlist Icon'
@@ -164,7 +164,7 @@ export default function Header({
 									/>
 								) : (
 									''
-								)}
+								)} */}
 							</Nav.Link>
 						</Nav>
 					</Navbar.Collapse>

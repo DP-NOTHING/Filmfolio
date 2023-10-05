@@ -75,7 +75,7 @@ function App() {
 					element={<User />}
 				/>
 				<Route
-					path='/player/*'
+					path='/player/:movieid'
 					element={<Player />}
 				/>
 				<Route

@@ -1,12 +1,12 @@
 .search-bar-container {
 	display: flex;
 	align-items: center;
-	width: 205px;
+	width: 20	5px;
 	/* margin-left: auto; */
-	margin-right: auto;
+	/* margin-right: auto;	 */
 }
 .search-bar {
-	height: 35px;
+	height: 32px;
 	width: 0;
 	padding: 0;
 	visibility: hidden;

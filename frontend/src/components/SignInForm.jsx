@@ -16,6 +16,7 @@ export default function SignInForm() {
 			})
 			.then(() => {
 				localStorage.setItem('username', username);
+				// localStorage.setItem('email',);
 				Navigate('/home', {
 					state: {
 						username,

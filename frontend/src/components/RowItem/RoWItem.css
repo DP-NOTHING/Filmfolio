@@ -24,6 +24,23 @@
     cursor: pointer;
     border-radius: 18px;
 }
+.delete-icon-container {
+    position: relative;
+    top: 17%; /* Adjust the top position as needed */
+    /* right: 20px; Adjust the right position as needed */
+    /* align-self: last baseline; */
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 4%;
+    z-index: 1; /* Place it above the image */
+  }
+  
+  /* Delete icon styles */
+  .delete-icon {
+    font-size: 20px; /* Adjust the icon size as needed */
+    color: red; /* Adjust the icon color as needed */
+    cursor: pointer;
+  }
 
 .movieRow--item img {
     width: 100%;
