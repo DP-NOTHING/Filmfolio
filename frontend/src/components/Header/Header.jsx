@@ -70,7 +70,7 @@ export default function Header({
 			Navigate('/sign-in');
 		});
 	};
-	// console.log(movieSwitch);
+	// //console.log(movieSwitch);
 	return (
 		// <h1>hi</h1>
 		<header className={black ? 'black' : ''}>

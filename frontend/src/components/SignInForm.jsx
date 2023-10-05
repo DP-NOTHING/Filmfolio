@@ -30,8 +30,8 @@ export default function SignInForm() {
 	//     // const handleOnSubmit = async (e) => {
 	//     //     e.preventDefault();
 	//     //     // const { name, email, password, reEnterPassword } = user
-	//     //     // console.log(user);
-	//     //     // console.log(email);
+	//     //     // //console.log(user);
+	//     //     // //console.log(email);
 	//     //     if( name && email){
 	//     //         axios.post("http://localhost:5000/register", { name, email })
 	//     //         .then( res => {

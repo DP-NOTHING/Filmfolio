@@ -7,16 +7,16 @@ const API_BASE = 'https://api.themoviedb.org/3';
 const Axios = async (endpoint) => {
 	try {
 		const res = await axios.get(`${API_BASE}${endpoint}`);
-		// console.log(res.data.results);
+		// //console.log(res.data.results);
 		return res.data;
 	} catch (err) {
 		console.log(err);
 	}
 	// .then(res=>{
 	//     // const result=res.data.json();
-	//     console.log(res.data.results);
+	//     //console.log(res.data.results);
 	//     return res.data.results;
-	// }).catch(err=>console.log(err));
+	// }).catch(err=>//console.log(err));
 };
 
 export default {

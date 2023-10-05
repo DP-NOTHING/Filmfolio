@@ -39,7 +39,7 @@ export default function Player() {
 			const main = [];
 			const data = await Tmdb.getMovieInfo(item.item.id, 'tv');
 			let start = 1;
-			// console.log(data.info, '())()))())()()');
+			// //console.log(data.info, '())()))())()()');
 			for (let i = 1; i <= data.info.number_of_seasons; i++) {
 				query += `season/${i},`;
 				if (i % 20 === 0 || i == data.info.number_of_seasons) {
@@ -55,21 +55,24 @@ export default function Player() {
 					query = '';
 				}
 			}
-			// console.log(main);
+			// //console.log(main);
 			setTrailer(data?.trailer);
 			setList(main);
+			return null;
 		} else {
 			const data = await Tmdb.getMovieInfo(item.item.id, 'movie');
-			setApiId(
-				item.item.name + '-' + item.item.id + '-' + item.item.media_type
-			);
+			// setApiId(
+			// 	item.item.name + '-' + item.item.id + '-' + item.item.media_type
+			// );
+			setApiId(data.info.original_title + '-' + data.info.id + '-movie');
 			setTrailer(data?.trailer);
 			setData(data.info);
+			return data.info.original_title + '-' + data.info.id + '-movie';
 		}
 	};
 	useEffect(() => {
 		setIsLoading(true);
-		getList().then(() => {
+		getList().then((movieApiId) => {
 			const videoPlayer = videojs(player.current, {
 				controls: true,
 				autoplay: false,
@@ -83,9 +86,12 @@ export default function Player() {
 					autoplay: false,
 					fluid: true,
 				});
-				videoPlayer.src(
-					`http://127.0.0.1:3000/stream/get-video/${apiId}`
-				);
+				// videoPlayer.src(
+				// 	`http://127.0.0.1:3000/stream/get-video/${apiId}`
+				// );
+				!movieApiId
+					? (player.current.src = `http://127.0.0.1:3000/stream/get-video/${apiId}`)
+					: (player.current.src = `http://127.0.0.1:3000/stream/get-video/${movieApiId}`);
 				setIsPlayerInitialized(true);
 			}
 			setIsLoading(false);
@@ -112,7 +118,7 @@ export default function Player() {
 						setIsLoading(false);
 						setShowUploaded(true);
 					}
-					// console.log(
+					// //console.log(
 					// 	response.data,
 					// 	'dddddddddddddddddddddddddddddddd'
 					// );
@@ -126,7 +132,7 @@ export default function Player() {
 					// }
 					setIsLoading(false);
 					// setShowUploaded(true);
-					// console.error(error, 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+					// //console.error(error, 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
 				});
 		}
 	};
@@ -141,7 +147,7 @@ export default function Player() {
 				responseType: 'blob', // Set the response type to 'blob'
 			})
 			.then(function (response) {
-				console.log(response);
+				//console.log(response);
 				if (response.status == 200) {
 					fileDownload(response.data, 'test.mp4');
 					setIsLoading(false);
@@ -163,9 +169,9 @@ export default function Player() {
 	};
 	// const trailerHandler = () => {};
 	const watchlistHandler = () => {
-		console.log('hiwatchlistahandler');
+		//console.log('hiwatchlistahandler');
 		const username = localStorage.getItem('username');
-		console.log(id);
+		//console.log(id);
 		let type;
 		if (item.item.first_air_date) {
 			type='tv';
@@ -253,7 +259,7 @@ export default function Player() {
 				
 				<div
 					data-vjs-player='true'
-					// data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
+					data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
 					// poster='http://content.bitsontherun.com/thumbs/3XnJSIm4-480.jpg'
 					style={{
 						marginTop: '7vh',
@@ -425,7 +431,7 @@ export default function Player() {
 												<ListGroup>
 													{season.map(
 														(episode, i) => {
-															// console.log(epis);
+															// //console.log(epis);
 															return (
 																<ListGroup.Item
 																	variant='dark'

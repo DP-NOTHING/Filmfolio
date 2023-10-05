@@ -8,10 +8,10 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 	trailer = `https://www.youtube-nocookie.com/embed/${
 		trailer?.split('?')[1].split('=')[1]
 	}?rel=0&loop=1&autoplay=1`;
-	// console.log(trailer);
+	// //console.log(trailer);
 	const [videoState, setVideoState] = useState(false);
 	let time;
-	// console.log(info.in_production);
+	// //console.log(info.in_production);
 	if (info?.release_date) {
 		time = new Date(info?.release_date).getFullYear().toString();
 	} else if (info?.first_air_date && info?.last_air_date) {
@@ -29,7 +29,7 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 		Navigate(`/player/${info.id}`, {
 			state: { item: info },
 		});
-		console.log(info);
+		//console.log(info);
 	};
 	useEffect(() => setVideoState(false), []);
 	// let firstDate = new Date(info?.first_air_date);
@@ -44,16 +44,16 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 	for (let i in info?.genres) {
 		genres.push(info?.genres[i].name);
 	}
-	// console.log(info?.name, '+++++++++++++++++++++++++++++===');
+	// //console.log(info?.name, '+++++++++++++++++++++++++++++===');
 	let description = info?.overview;
 	// if (description.length > 200) {
 	// 	description = description.substring(0, 200) + '...';
 	// }
 	const watchlistHandler = () => {
-		console.log('hiwatchlistahandler');
+		//console.log('hiwatchlistahandler');
 		const username = localStorage.getItem('username');
-		console.log(info);
-		console.log("[[[[[[[[[[");
+		//console.log(info);
+		//console.log("[[[[[[[[[[");
 		let type;
 		if (info.first_air_date) {
 			type='tv';

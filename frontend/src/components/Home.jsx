@@ -46,32 +46,32 @@ export default function Home() {
 			type="movie";
 		}
 		const username = localStorage.getItem('username');
-		// console.log(type);
-		// console.log(username);
+		// //console.log(type);
+		// //console.log(username);
 		if(type=='tv'){
-			console.log("00000");
+			//console.log("00000");
 			const listt=[...movieList];
-			console.log(listt);
-			console.log("-----");
+			//console.log(listt);
+			//console.log("-----");
 			const index=listt[1].items.results.findIndex((i)=>{return i.id==item.id});
 			listt[1].items.results.splice(index,1);
-			console.log("00000");
-			console.log(listt);
+			//console.log("00000");
+			//console.log(listt);
 			setMovieList(listt);
 		}
 		else{
-			console.log("00000");
+			//console.log("00000");
 			
 			const listt=[...movieList];
-			console.log(listt);
-			console.log("-----");
+			//console.log(listt);
+			//console.log("-----");
 			const index=listt[0].items.results.findIndex((i)=>{return i.id==item.id});
-			console.log(listt[0].items.results[index]);
+			//console.log(listt[0].items.results[index]);
 			listt[0].items.results.splice(index,1);
-			console.log("00000");
-			// console.log(listt);
+			//console.log("00000");
+			// //console.log(listt);
 			setMovieList(listt);
-			console.log(movieList);
+			//console.log(movieList);
 		}
 		axios.post(`http://127.0.0.1:3000/addwatchlist/del`,{"username":username,"type":type,"movieid":item.id}).then(()=>{
 
@@ -114,10 +114,10 @@ export default function Home() {
 	useEffect(() => {
 		const loadAllMovies = async () => {
 			const link = await Tmdb.getTrailer();
-			console.log(link);
+			//console.log(link);
 			let list = await Tmdb.getMovieHomeList();
 			setMovieList(list);
-			console.log(list);
+			//console.log(list);
 			let trending = list.filter((i) => i.slug === 'trending');
 			while (true) {
 				let randomChosen = Math.floor(
@@ -136,8 +136,8 @@ export default function Home() {
 		};
 		const loadWatchlist =async ()=>{
 			const username=localStorage.getItem('username');
-			console.log("-----------");
-			console.log(username);
+			//console.log("-----------");
+			//console.log(username);
 			const list=[{slug:"movie watchlist",title:"movie watchlist",items:{results:[]}},{slug:"tv watchlist",title:"tv watchlist",items:{results:[]}}]
 			const datas =await axios.get(`http://127.0.0.1:3000/addwatchlist/movie/${username}`);
 			// let watchlist =datas.data;
@@ -151,14 +151,14 @@ export default function Home() {
 				let infos = await Tmdb.getMovieInfo(datas2.data[i],'tv');
 				list[1].items.results.push(infos.info);
 			}
-			console.log(list);
+			//console.log(list);
 			setMovieList(list);
 
 		}
 		const loadAllTvShows = async () => {
 			// setMovieList([]);
 			let list = await Tmdb.getTvShowList();
-			// console.log(list);
+			// //console.log(list);
 			setMovieList(list);
 			let trending = list.filter((i) => i.slug === 'trending');
 			while (true) {
@@ -178,11 +178,11 @@ export default function Home() {
 		};
 		// const loadSearchResults = async () => {
 		// 	// const data = await Tmdb.getSearchResults(query);
-		// 	// console.log(data);
+		// 	// //console.log(data);
 		// };
 		if (movieSwitch == 'movie') {
 			// Tmdb.getTrailer()
-			// console.log();
+			// //console.log();
 			setiswatchlist(false);
 			setIsLoading(true);
 			loadAllMovies().then(() => setIsLoading(false));
@@ -218,7 +218,7 @@ export default function Home() {
 		};
 	}, []);
 	
-	// console.log(localStorage.getItem('username'));
+	// //console.log(localStorage.getItem('username'));
 	return (
 		<div className='page'>
 			
@@ -248,7 +248,7 @@ export default function Home() {
 							iswatchlist={iswatchlist}
 						/>
 					))}
-				{!movieList.length ? <div style={{fontSize:"1222",position:"relative"}}>list is empty</div>:console.log("not empty")}	
+				{!movieList.length ? <div style={{fontSize:"1222",position:"relative"}}>list is empty</div>:''}	
 				{search &&
 					searchResult?.length &&
 					searchResult.map((item, key) => (

@@ -9,7 +9,7 @@ const get_popular = async (type, cat) => {
 		.get(`${base}${type}/${cat}?language=en-US&page=1`)
 		.then((res) => {
 			const result = res.json();
-			// console.log(result);
+			// //console.log(result);
 		})
 		.catch((err) => console.log(err));
 };

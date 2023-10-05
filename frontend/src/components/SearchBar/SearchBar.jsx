@@ -10,7 +10,7 @@ export default function SearchBar({
 	const [isInputVisible, setIsInputVisible] = useState(false);
 	const inputRef = useRef(null);
 	useEffect(() => {
-		console.log(inputRef);
+		//console.log(inputRef);
 		if (query.length != 0) {
 			searchHandler(true);
 			setIsLoading(true);
@@ -33,7 +33,7 @@ export default function SearchBar({
 						setTimeout(() => {
 							inputRef.current.focus();
 						}, 1000);
-						// console.log(inputRef.current.focus());
+						// //console.log(inputRef.current.focus());
 						setIsInputVisible(!isInputVisible);
 					}
 				}}
