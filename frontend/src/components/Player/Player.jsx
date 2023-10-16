@@ -90,8 +90,8 @@ export default function Player() {
 				// 	`http://127.0.0.1:3000/stream/get-video/${apiId}`
 				// );
 				!movieApiId
-					? (player.current.src = `http://127.0.0.1:3000/stream/get-video/${apiId}`)
-					: (player.current.src = `http://127.0.0.1:3000/stream/get-video/${movieApiId}`);
+					? (player.current.src = `${process.env.REACT_APP_BACKEND}/stream/get-video/${apiId}`)
+					: (player.current.src = `${process.env.REACT_APP_BACKEND}/stream/get-video/${movieApiId}`);
 				setIsPlayerInitialized(true);
 			}
 			setIsLoading(false);
@@ -103,7 +103,7 @@ export default function Player() {
 			const formData = new FormData();
 			formData.append('video', selectedFile);
 			setIsLoading(true);
-			axios.post(`http://127.0.0.1:3000/upload/upload-video/${apiId}`,
+			axios.post(`${process.env.REACT_APP_BACKEND}/upload/upload-video/${apiId}`,
 					formData,
 					{
 						headers: {
@@ -144,7 +144,7 @@ export default function Player() {
 	const downloadHandler = () => {
 		setIsLoading(true);
 		axios
-			.get(`http://127.0.0.1:3000/stream/get-video/${apiId}/download`, {
+			.get(`${process.env.REACT_APP_BACKEND}/stream/get-video/${apiId}/download`, {
 				responseType: 'blob', // Set the response type to 'blob'
 			},{
 				username:localStorage.getItem('username'),
@@ -183,7 +183,7 @@ export default function Player() {
 		else{
 			type="movie";
 		}
-		axios.post(`http://127.0.0.1:3000/addwatchlist/${id}`,{"name":"abc",
+		axios.post(`${process.env.REACT_APP_BACKEND}/addwatchlist/${id}`,{"name":"abc",
 	"username":username,"type":type},{
 		"username":localStorage.getItem('username'),
 		"token":localStorage.getItem('token'),
@@ -273,7 +273,7 @@ export default function Player() {
 					}}
 				>
 					<video
-						src={`http://127.0.0.1:3000/stream/get-video/${apiId}`}
+						src={`${process.env.REACT_APP_BACKEND}/stream/get-video/${apiId}`}
 						ref={player}
 						className='video-js vjs-default-skin'
 						width='640px'

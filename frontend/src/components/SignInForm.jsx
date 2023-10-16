@@ -10,7 +10,7 @@ export default function SignInForm() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axios
-			.post('http://127.0.0.1:3000/login/', {
+			.post(`${process.env.REACT_APP_BACKEND}/login/`, {
 				username,
 				password,
 			})

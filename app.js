@@ -18,8 +18,11 @@ const app = express();
 dotenv.config({ path: './.env' });
 app.set('trust proxy', 1); // trust first proxy
 
-
-app.use(cors());
+const corsOptions ={
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(

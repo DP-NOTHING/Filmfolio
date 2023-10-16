@@ -8,6 +8,7 @@ import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+
 export default function Home() {
 	// const [query, setQuery] = useState('');
 	const state = useLocation().state;
@@ -73,7 +74,7 @@ export default function Home() {
 			setMovieList(listt);
 			//console.log(movieList);
 		}
-		axios.post(`http://127.0.0.1:3000/addwatchlist/del`,{"username":username,"type":type,"movieid":item.id},{
+		axios.post(`${process.env.REACT_APP_BACKEND}/addwatchlist/del`,{"username":username,"type":type,"movieid":item.id},{
 			"username":localStorage.getItem('username'),
 			"token":localStorage.getItem('token'),
 		}).then(()=>{
@@ -142,7 +143,7 @@ export default function Home() {
 			//console.log("-----------");
 			//console.log(username);
 			const list=[{slug:"movie watchlist",title:"movie watchlist",items:{results:[]}},{slug:"tv watchlist",title:"tv watchlist",items:{results:[]}}]
-			const datas =await axios.get(`http://127.0.0.1:3000/addwatchlist/movie/${username}`,{
+			const datas =await axios.get(`${process.env.REACT_APP_BACKEND}/addwatchlist/movie/${username}`,{
 				"username":localStorage.getItem('username'),
 				"token":localStorage.getItem('token'),
 			});
@@ -151,7 +152,7 @@ export default function Home() {
 				let infos = await Tmdb.getMovieInfo(datas.data[i],'movie');
 				list[0].items.results.push(infos.info);
 			}
-			const datas2 =await axios.get(`http://127.0.0.1:3000/addwatchlist/tv/${username}`,{
+			const datas2 =await axios.get(`${process.env.REACT_APP_BACKEND}/addwatchlist/tv/${username}`,{
 				"username":localStorage.getItem('username'),
 				"token":localStorage.getItem('token'),
 			});
