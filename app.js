@@ -25,6 +25,7 @@ app.use(function (req, res, next) {
       next();
     });
 const corsOptions ={
+	origin:["http://localhost:3000","https://filmfolio-git-temp2-dp-nothing.vercel.app"],
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
