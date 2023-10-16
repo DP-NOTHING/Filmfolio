@@ -62,7 +62,10 @@ export default function FeatureMovie({ item: { info, trailer } }) {
 			type="movie";
 		}
 		axios.post(`http://127.0.0.1:3000/addwatchlist/${info.id}`,{"name":"abc",
-	"username":username,"type":type});
+	"username":username,"type":type},{
+		"username":localStorage.getItem('username'),
+		"token":localStorage.getItem('token'),
+	});
 	};
 
 	useEffect(() => {

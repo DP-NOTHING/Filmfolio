@@ -103,14 +103,15 @@ export default function Player() {
 			const formData = new FormData();
 			formData.append('video', selectedFile);
 			setIsLoading(true);
-			axios
-				.post(
-					`http://127.0.0.1:3000/upload/upload-video/${apiId}`,
+			axios.post(`http://127.0.0.1:3000/upload/upload-video/${apiId}`,
 					formData,
 					{
 						headers: {
 							'Content-Type': 'multipart/form-data;',
 						},
+						"username":localStorage.getItem('username'),
+						"token":localStorage.getItem('token'),
+						
 					}
 				)
 				.then(function (response) {
@@ -145,6 +146,9 @@ export default function Player() {
 		axios
 			.get(`http://127.0.0.1:3000/stream/get-video/${apiId}/download`, {
 				responseType: 'blob', // Set the response type to 'blob'
+			},{
+				username:localStorage.getItem('username'),
+				token:localStorage.getItem('token'),
 			})
 			.then(function (response) {
 				//console.log(response);
@@ -180,28 +184,31 @@ export default function Player() {
 			type="movie";
 		}
 		axios.post(`http://127.0.0.1:3000/addwatchlist/${id}`,{"name":"abc",
-	"username":username,"type":type});
+	"username":username,"type":type},{
+		"username":localStorage.getItem('username'),
+		"token":localStorage.getItem('token'),
+	});
 	};
 
 	return (
 		<div>
 			<header className='black'>
-				<div className='header--logo'>
-					<a href='/home'>
+				<div className='header--logo' onClick={()=>{Navigate('/home')}}>
+					
 						<img
 							src={logo}
 							alt='logo'
 						/>
-					</a>
+					
 				</div>
 				<div>{item.item.name}</div>
 				<div className='header--user'>
-					<a href='/user'>
+					{/* <a href='/user'>
 						<img
 							src='https://i.pinimg.com/originals/b6/77/cd/b677cd1cde292f261166533d6fe75872.png'
 							alt=''
 						/>
-					</a>
+					</a> */}
 				</div>
 			</header>
 			{isLoading && (

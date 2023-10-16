@@ -73,7 +73,10 @@ export default function Home() {
 			setMovieList(listt);
 			//console.log(movieList);
 		}
-		axios.post(`http://127.0.0.1:3000/addwatchlist/del`,{"username":username,"type":type,"movieid":item.id}).then(()=>{
+		axios.post(`http://127.0.0.1:3000/addwatchlist/del`,{"username":username,"type":type,"movieid":item.id},{
+			"username":localStorage.getItem('username'),
+			"token":localStorage.getItem('token'),
+		}).then(()=>{
 
 		});
 		
@@ -139,13 +142,19 @@ export default function Home() {
 			//console.log("-----------");
 			//console.log(username);
 			const list=[{slug:"movie watchlist",title:"movie watchlist",items:{results:[]}},{slug:"tv watchlist",title:"tv watchlist",items:{results:[]}}]
-			const datas =await axios.get(`http://127.0.0.1:3000/addwatchlist/movie/${username}`);
+			const datas =await axios.get(`http://127.0.0.1:3000/addwatchlist/movie/${username}`,{
+				"username":localStorage.getItem('username'),
+				"token":localStorage.getItem('token'),
+			});
 			// let watchlist =datas.data;
 			for(let i=0;i<datas.data.length;i++){
 				let infos = await Tmdb.getMovieInfo(datas.data[i],'movie');
 				list[0].items.results.push(infos.info);
 			}
-			const datas2 =await axios.get(`http://127.0.0.1:3000/addwatchlist/tv/${username}`);
+			const datas2 =await axios.get(`http://127.0.0.1:3000/addwatchlist/tv/${username}`,{
+				"username":localStorage.getItem('username'),
+				"token":localStorage.getItem('token'),
+			});
 			// let watchlist =datas.data;
 			for(let i=0;i<datas2.data.length;i++){
 				let infos = await Tmdb.getMovieInfo(datas2.data[i],'tv');

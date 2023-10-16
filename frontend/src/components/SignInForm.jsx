@@ -14,9 +14,11 @@ export default function SignInForm() {
 				username,
 				password,
 			})
-			.then(() => {
+			.then((res) => {
 				localStorage.setItem('username', username);
-				// localStorage.setItem('email',);
+				localStorage.setItem('token',res.data.token);
+				// console.log('----------');
+				// console.log(res);
 				Navigate('/home', {
 					state: {
 						username,

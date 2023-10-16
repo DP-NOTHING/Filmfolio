@@ -196,6 +196,7 @@ export default function Header({
 					{/* <Dropdown.Item href='#'>Menu Item</Dropdown.Item> */}
 				</Dropdown.Menu>
 			</Dropdown>
+			{localStorage.getItem('username')}
 		</header>
 	);
 }
