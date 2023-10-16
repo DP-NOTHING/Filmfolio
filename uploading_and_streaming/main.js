@@ -95,6 +95,7 @@ router
 	.post(upload.single('video'), async (req, res) => {
 		// const actualObjectId = new mongoose.Types.ObjectId(req.file.id);
 		// console.log(req.file.id.toString());
+		console.log(req);
 		const uploadedId = req.file.id.toString();
 		const apiId = req.params['id'];
 		await IdMapping.insertMany([{ apiId, uploadedId }]);

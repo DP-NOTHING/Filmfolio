@@ -4,7 +4,7 @@ const app = express();
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const dotenv = require('dotenv');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 dotenv.config('./../.env');
 router.use(express.json());
 router.route('/').post(async (req, res) => {
@@ -38,7 +38,7 @@ router.route('/').post(async (req, res) => {
 			
 			
 		} else {
-			console.log();
+			
 			res.statusCode = 404;
 			res.end('incorrect password');
 		}
