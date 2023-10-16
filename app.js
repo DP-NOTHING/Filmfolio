@@ -11,28 +11,18 @@ const logoutRouter = require('./login/logout').router;
 const addWatchlistRouter=require('./login/addwatchlist').router;
 const uploadAndStreamingRouter =require('./uploading_and_streaming/main').router;
 // const { upload } = require('./test_upload/test');
-
-
 const express = require('express');
 const app = express();
+
 dotenv.config({ path: './.env' });
-app.set('trust proxy', 1); // trust first proxy
-app.use((req, res, next) => {
-    res.append('Access-Control-Allow-Origin', "http://localhost:3000");
-    res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.append('Access-Control-Allow-Headers', 'Content-Type');
-	req.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-	req.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-	req.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    next();
-});
 
 const corsOptions ={
 	origin:["http://localhost:3000","https://filmfolio-git-temp2-dp-nothing.vercel.app"],
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
+    credentials:true,
 }
 app.use(cors(corsOptions));
+
+app.set('trust proxy', 1); // trust first proxy
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(
