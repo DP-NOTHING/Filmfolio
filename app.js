@@ -17,7 +17,13 @@ const express = require('express');
 const app = express();
 dotenv.config({ path: './.env' });
 app.set('trust proxy', 1); // trust first proxy
-
+app.use(function (req, res, next) {
+    //Enabling CORS
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization");
+      next();
+    });
 const corsOptions ={
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
