@@ -21,8 +21,12 @@ app.use((req, res, next) => {
     res.append('Access-Control-Allow-Origin', "http://localhost:3000");
     res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.append('Access-Control-Allow-Headers', 'Content-Type');
+	req.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+	req.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+	req.setHeader("Access-Control-Allow-Headers", "Content-Type");
     next();
 });
+
 const corsOptions ={
 	origin:["http://localhost:3000","https://filmfolio-git-temp2-dp-nothing.vercel.app"],
     credentials:true,            //access-control-allow-credentials:true
