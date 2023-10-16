@@ -6,3 +6,5 @@
 /frontend/README.md
 /frontend/src/store
 /frontend/.gitignore
+node_modules
+package-lock.json
