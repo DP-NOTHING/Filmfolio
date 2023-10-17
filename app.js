@@ -17,7 +17,7 @@ const app = express();
 dotenv.config({ path: './.env' });
 
 const corsOptions ={
-	origin:["http://localhost:3000","https://filmfolio-git-temp2-dp-nothing.vercel.app"],
+	origin:["http://127.0.0.1:3000","https://filmfolio-git-temp2-dp-nothing.vercel.app"],
     credentials:true,
 }
 app.use(cors(corsOptions));
