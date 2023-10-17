@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const session = require('express-session');
+const session = require('cookie-session');
 const cors = require('cors');
 const { connect } = require('./db/connection');
 
