@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, NavLink ,Routes} from "react-router-dom";
+import {  Navigate,BrowserRouter as Router, Route, NavLink ,Routes} from "react-router-dom";
 import "../App.css";
 import SignUpForm from "../components/SignUpForm";
 import SignInForm from "../components/SignInForm";
@@ -25,7 +25,7 @@ export default function Login() {
             </NavLink>
           </div>
 
-          <div className="formTitle">
+          <div className="formTitle" style={{margin:'0'}}>
             <NavLink
               to="/sign-in"
               className={({ isActive }) => (isActive ? 'formTitleLink-active' : 'formTitleLink')}
@@ -42,9 +42,9 @@ export default function Login() {
             </NavLink>
           </div>
              <Routes>
+             <Route path="/sign-in" element={<SignInForm /> } />
              <Route exact path="/" element={<SignUpForm />} />
-             <Route path="/sign-in" element={<SignInForm />} />
-           
+             <Route path="*" element={<Navigate to='/sign-in' />} />
              </Routes>
         </div>
       </div>

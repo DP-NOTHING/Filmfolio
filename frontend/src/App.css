@@ -138,6 +138,20 @@
   padding: 15px 70px;
   font-size: 0.8em;
   font-weight: 500;
+  margin-right: 7px;
+}
+
+.valerror{
+  min-height: 35px;
+  padding:6px;
+  background-color: #40434e;
+  border-radius: 10px;
+  margin:15px 0 15px 0;
+}
+.valnoerror{
+  min-height: 35px;
+  padding:6px;
+  margin:15px 0 15px 0;
 }
 
 .formFieldButton:hover{

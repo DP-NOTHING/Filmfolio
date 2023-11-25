@@ -1,15 +1,25 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLoginButton } from 'react-social-login-buttons';
-import React, { useState } from 'react';
+import React, { useState,useEffect  } from 'react';
 import '../App.css';
 import axios from 'axios';
+import { useAuth } from '../provider/authProvider';
 export default function SignInForm() {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [valerror,setvalerror] = useState('');
 	const Navigate = useNavigate();
+	const { setToken } = useAuth();
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		axios
+		if(username==''){
+			setvalerror('please enter a username');
+		}
+		else if(password==''){
+			setvalerror('please enter a password');
+		}
+		else{
+			axios
 			.post('http://127.0.0.1:3000/login/', {
 				username,
 				password,
@@ -17,6 +27,7 @@ export default function SignInForm() {
 			.then((res) => {
 				localStorage.setItem('username', username);
 				localStorage.setItem('token',res.data.token);
+				setToken(res.data.token);
 				// console.log('----------');
 				// console.log(res);
 				Navigate('/home', {
@@ -24,7 +35,12 @@ export default function SignInForm() {
 						username,
 					},
 				});
+			})
+			.catch(res=>{
+				setvalerror(res.response.data);
 			});
+		}
+		
 	};
 	// const [name, setName] = useState("");
 	//     // const [email, setEmail] = useState("");
@@ -65,6 +81,11 @@ export default function SignInForm() {
 	// export default App;
 
 	return (
+		<div>	
+			{valerror!=''?<div className='valerror'>
+				{valerror}
+			</div>:<div className='valnoerror'></div>}
+			
 		<div className='formCenter'>
 			<form className='formFields'>
 				<div className='formField'>
@@ -121,15 +142,8 @@ export default function SignInForm() {
 						Create an account
 					</Link>
 				</div>
-
-				<div className='socialMediaButtons'>
-					<div className='facebookButton'>
-						<GoogleLoginButton
-							onClick={() => alert('Google auth')}
-						/>
-					</div>
-				</div>
 			</form>
+		</div>
 		</div>
 	);
 }
