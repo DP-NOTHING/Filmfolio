@@ -7,21 +7,59 @@ export default function SignUpForm() {
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [valerror,setvalerror] = useState('');
+	const [hasAgreed,sethasAgreed]= useState(false);
 	const Navigate = useNavigate();
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		axios
-			.post(`${process.env.REACT_APP_BACKEND}/signup/`, {
-				username,
-				email,
-				password,
-			})
-			.then(() => {
-				Navigate('/sign-in');
-			});
+		
+		
+			if(username==''){
+				setvalerror('please enter a username');
+			}
+			else if(email==''){
+				setvalerror('please enter a email');
+			}
+			else if(password==''){
+				setvalerror('please enter a password');
+			}
+			else if(hasAgreed==false){
+				setvalerror('please agree with our t&c');
+			}
+			else{
+				axios
+				.post('http://127.0.0.1:3000/signup/', {
+					username,
+					email,
+					password,
+				})
+				.then(() => {
+					Navigate('/sign-in');
+				})
+				.catch(res=>{
+					setvalerror(res.response.data);
+				});
+			}
+
+			
+		
+		
 	};
+	const handleChangeAgree=()=>{
+		if(hasAgreed==true){
+			sethasAgreed(false);
+		}
+		else{
+			sethasAgreed(true);
+			setvalerror('');
+		}		
+	}
 	return (
-		<div className='formCenter'>
+		<div>	
+			{valerror!=''?<div className='valerror'>
+				{valerror}
+			</div>:<div className='valnoerror'></div>}
+		<div className='formCenter' style={{marginBottom:'30px'}}>
 			<form
 				// onSubmit={handleSubmit}
 				className='formFields'
@@ -85,8 +123,8 @@ export default function SignUpForm() {
 							className='formFieldCheckbox'
 							type='checkbox'
 							name='hasAgreed'
-							// value={this.state.hasAgreed}
-							// onChange={this.handleChange}
+							value={hasAgreed}
+							onChange={handleChangeAgree}
 						/>{' '}
 						I agree all statements in{' '}
 						<a
@@ -98,21 +136,24 @@ export default function SignUpForm() {
 					</label>
 				</div>
 
-				<div className='formField'>
+				<div className='formField' style={{marginBottom:'0px'}}>
 					<button
 						className='formFieldButton'
 						onClick={handleSubmit}
+						style={{marginBottom:'0px'}}
 					>
 						Sign Up
 					</button>{' '}
 					<Link
 						to='/sign-in'
 						className='formFieldLink'
+						style={{marginBottom:'0px'}}
 					>
 						I'm already member
 					</Link>
 				</div>
 			</form>
+		</div>
 		</div>
 	);
 }

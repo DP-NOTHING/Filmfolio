@@ -10,6 +10,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Dropdown from 'react-bootstrap/Dropdown';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../provider/authProvider';
 // const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 // 	width: 70,
 // 	height: 32,
@@ -63,10 +64,14 @@ export default function Header({
 	setIsLoading,
 }) {
 	const Navigate = useNavigate();
+	const { setToken } = useAuth();
 	const logout = (e) => {
 		e.preventDefault();
-		axios.post(`${process.env.REACT_APP_BACKEND}/logout/`).then(() => {
+		axios.post('http://127.0.0.1:3000/logout/').then(() => {
 			localStorage.removeItem('username');
+			
+			setToken();
+			Navigate('/',{ replace: true });
 			Navigate('/sign-in');
 		});
 	};

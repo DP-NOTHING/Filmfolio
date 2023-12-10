@@ -9,7 +9,7 @@ import RowItem from '../RowItem/RowItem';
 export default function MovieRow({ title, items, hoverHandler,delwatchlist,iswatchlist}) {
 	const [scrollX, setScrollX] = useState(0);
 	const handleLeftArrow = () => {
-		let x = scrollX + Math.round(window.innerWidth / 2);
+		let x = scrollX + Math.round(window.innerWidth / 4);
 		if (x > 0) {
 			x = 0;
 		}
@@ -17,7 +17,7 @@ export default function MovieRow({ title, items, hoverHandler,delwatchlist,iswat
 	};
 
 	const handleRightArrow = () => {
-		let x = scrollX - Math.round(window.innerWidth / 2);
+		let x = scrollX - Math.round(window.innerWidth / 4);
 		let listW = items.results.length * 150;
 		if (window.innerWidth - listW > x) {
 			x = window.innerWidth - listW - 60;
@@ -30,14 +30,14 @@ export default function MovieRow({ title, items, hoverHandler,delwatchlist,iswat
 		const isScrollingRight = event.deltaX > 0;
 
 		if (isScrollingLeft) {
-			let x = scrollX + Math.round(window.innerWidth / 2);
+			let x = scrollX + Math.round(window.innerWidth / 84);
 			// Clamp the left scroll to prevent going out of range
 			// let listW = items.results.length * 122;
 			x = Math.min(x, 0);
 			// x=Math.max(x, window.innerWidth + listW - 60);
 			setScrollX(x);
 		} else if (isScrollingRight) {
-			let x = scrollX - Math.round(window.innerWidth / 2);
+			let x = scrollX - Math.round(window.innerWidth / 84);
 			let listW = items.results.length * 122;
 			// Clamp the right scroll to prevent going out of range
 			x = Math.max(x, window.innerWidth - listW - 60);
@@ -77,7 +77,7 @@ export default function MovieRow({ title, items, hoverHandler,delwatchlist,iswat
 						width: items.results.length * 150,
 						transform: `translateX(${scrollX}px)`,
 						display: 'flex',
-						transition: 'transform 0.5s ease',
+						transition: 'transform 0.4s ease',
 					}}
 				>
 					

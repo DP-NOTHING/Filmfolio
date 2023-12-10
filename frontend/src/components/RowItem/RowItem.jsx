@@ -41,10 +41,14 @@ import Tmdb from '../Tmdb';
 import DeleteIcon from '@mui/icons-material/Delete'; // Import the delete icon from Material-UI
 
 export default function RowItem(props) {
+  let timeout = null;
   function fun(e) {
-    Tmdb.getMovieInfo(props.info.id, props.info.media_type).then((data) =>
-      props.hoverHandler(data)
-    );
+    timeout = setTimeout(() => {
+      Tmdb.getMovieInfo(props.info.id, props.info.media_type).then((data) =>
+        props.hoverHandler(data)
+      );
+    }, 600);
+    
   }
   const Navigate = useNavigate();
   return (
@@ -52,6 +56,9 @@ export default function RowItem(props) {
       key={props.id}
       className='movieRow--item'
       onMouseOver={fun}
+      onMouseOut={() => {
+        clearTimeout(timeout);
+      }}
       onClick={() => {
         // adding movie id to the next route
         Navigate(`/player/${props.id}`, {

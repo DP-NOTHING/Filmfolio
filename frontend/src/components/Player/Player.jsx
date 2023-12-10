@@ -30,8 +30,11 @@ export default function Player() {
 	const player = useRef(null);
 	const [showUploaded, setShowUploaded] = useState(false);
 	const [showDownloaded, setShowDownloaded] = useState(false);
+	const [showAdded,setShowAdded]=useState(false);
+	const [addMessage,setAddMessage]=useState('');
 	const uploadToastRef = useRef(null);
 	const downloadToastRef = useRef(null);
+	const watchlistToastRef = useRef(null);
 
 	const getList = async () => {
 		if (item.item.first_air_date) {
@@ -58,6 +61,7 @@ export default function Player() {
 			// //console.log(main);
 			setTrailer(data?.trailer);
 			setList(main);
+			setData(data.info);
 			return null;
 		} else {
 			const data = await Tmdb.getMovieInfo(item.item.id, 'movie');
@@ -187,7 +191,11 @@ export default function Player() {
 	"username":username,"type":type},{
 		"username":localStorage.getItem('username'),
 		"token":localStorage.getItem('token'),
-	});
+	})
+	.then((res)=>{
+			setShowAdded(true);
+			setAddMessage(res.data);
+		});
 	};
 
 	return (
@@ -263,7 +271,29 @@ export default function Player() {
 					</Toast.Header>
 					<Toast.Body>video downloaded successfully!</Toast.Body>
 				</Toast>
-				
+				<Toast
+					ref={watchlistToastRef}
+					style={{
+						position: 'absolute',
+						top: '10%',
+						right: '50%',
+						left : '50%',
+						zIndex: '100',
+					}}
+					// position='top-center'
+					data-bs-theme='dark'
+					bg='Secondary'
+					show={showAdded}
+					onClose={() => {
+						setShowAdded(false);
+						setAddMessage('');
+					}}
+				>
+					<Toast.Header>
+						<strong className='me-auto'>FILMFOLIO</strong>
+					</Toast.Header>
+					<Toast.Body>{addMessage}</Toast.Body>
+				</Toast>
 				<div
 					data-vjs-player='true'
 					data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'
@@ -529,7 +559,7 @@ export default function Player() {
 					})}
 				{data && (
 					<div style={{ marginTop: '0.7vh' }}>
-						<h3> {data.original_title}</h3>
+						<h1> {data.original_title}</h1>
 						<span> {data.tagline}</span>
 						<p>Overview: {data.overview}</p>
 						<span>duration: {data.runtime} minutes</span>
