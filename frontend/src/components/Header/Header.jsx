@@ -67,7 +67,7 @@ export default function Header({
 	const { setToken } = useAuth();
 	const logout = (e) => {
 		e.preventDefault();
-		axios.post('http://127.0.0.1:3000/logout/').then(() => {
+		axios.post(`${process.env.REACT_APP_BACKEND}/logout/`).then(() => {
 			localStorage.removeItem('username');
 			
 			setToken();

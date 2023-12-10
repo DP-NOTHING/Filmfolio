@@ -28,7 +28,7 @@ export default function SignUpForm() {
 			}
 			else{
 				axios
-				.post('http://127.0.0.1:3000/signup/', {
+				.post(`${process.env.REACT_APP_BACKEND}/signup/`, {
 					username,
 					email,
 					password,
