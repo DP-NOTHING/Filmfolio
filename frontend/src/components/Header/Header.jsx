@@ -67,13 +67,25 @@ export default function Header({
 	const { setToken } = useAuth();
 	const logout = (e) => {
 		e.preventDefault();
-		axios.post(`${process.env.REACT_APP_BACKEND}/logout/`).then(() => {
-			localStorage.removeItem('username');
-			
-			setToken();
-			Navigate('/',{ replace: true });
-			Navigate('/sign-in');
-		});
+		setIsLoading(true);
+		axios
+			.post(`${process.env.REACT_APP_BACKEND}/logout/`)
+			.then(() => {
+				localStorage.removeItem('username');
+
+				setToken();
+				Navigate('/', { replace: true });
+				Navigate('/sign-in');
+				setIsLoading(false);
+			})
+			.catch((err) => {
+				localStorage.removeItem('username');
+
+				setToken();
+				Navigate('/', { replace: true });
+				Navigate('/sign-in');
+				setIsLoading(false);
+			});
 	};
 	// //console.log(movieSwitch);
 	return (
@@ -100,9 +112,7 @@ export default function Header({
 							<Nav.Link
 								active={movieSwitch == 'movie' ? true : false}
 								onClick={() =>
-									movieSwitch != 'movie'
-										? movieSwitchHandler('movie')
-										: null
+									movieSwitch != 'movie' ? movieSwitchHandler('movie') : null
 								}
 							>
 								Movies{' '}
@@ -124,9 +134,7 @@ export default function Header({
 							<Nav.Link
 								active={movieSwitch == 'tvshow' ? true : false}
 								onClick={() =>
-									movieSwitch != 'tvshow'
-										? movieSwitchHandler('tvshow')
-										: null
+									movieSwitch != 'tvshow' ? movieSwitchHandler('tvshow') : null
 								}
 							>
 								Tv Shows{' '}
@@ -146,9 +154,7 @@ export default function Header({
 								)} */}
 							</Nav.Link>
 							<Nav.Link
-								active={
-									movieSwitch == 'watchlist' ? true : false
-								}
+								active={movieSwitch == 'watchlist' ? true : false}
 								onClick={() =>
 									movieSwitch != 'watchlist'
 										? movieSwitchHandler('watchlist')
