@@ -69,10 +69,7 @@ router.route('/get-video/:apiId/:option?').get(async (req, res) => {
 
 				// Set response headers for partial content
 				res.status(206); // Partial Content
-				res.setHeader(
-					'Content-Range',
-					`bytes ${start}-${end}/${fileSize}`
-				);
+				res.setHeader('Content-Range', `bytes ${start}-${end}/${fileSize}`);
 				res.setHeader('Content-Length', chunkSize);
 				// Create a readable stream for the specified range
 				end++;
@@ -95,9 +92,16 @@ router
 	.post(upload.single('video'), async (req, res) => {
 		// const actualObjectId = new mongoose.Types.ObjectId(req.file.id);
 		// console.log(req.file.id.toString());
-		console.log(req);
+		// console.log(req);
 		const uploadedId = req.file.id.toString();
 		const apiId = req.params['id'];
+		const old_mapping = await IdMapping.find({ apiId });
+		for (let oldMapping of old_mapping) {
+			await gfs.files.deleteOne({
+				_id: new mongoose.Types.ObjectId(oldMapping.uploadedId),
+			});
+		}
+		await IdMapping.deleteOne({ apiId });
 		await IdMapping.insertMany([{ apiId, uploadedId }]);
 		return res.status(200).end('uploaded successfully');
 	});

@@ -14,20 +14,20 @@ router.route('/').post(async (req, res) => {
 	const email = req.body.email;
 	const data = await User.find();
 	try {
-		let temp = user = await User.findOne({username});
-		if(user){
+		let temp = (user = await User.findOne({ username }));
+		if (user) {
 			return res.status(400).json({ msg: 'Email already exists' });
 		}
-		
+
 		const salt = await bcrypt.genSalt(10);
-      	password = await bcrypt.hash(password, salt);
+		password = await bcrypt.hash(password, salt);
 
 		await User.insertMany([{ username, password, email }]);
 
-		res.sendStatus(200).end('signup');
+		return res.sendStatus(200).end('signup');
 	} catch (error) {
 		console.log(error);
-		res.sendStatus(405).end(`error: ${error}`);
+		return res.sendStatus(405).end(`error: ${error}`);
 	}
 	// console.log(req.body);
 });

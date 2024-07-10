@@ -3,23 +3,26 @@ const session = require('cookie-session');
 const cors = require('cors');
 const { connect } = require('./db/connection');
 
-
 const loginRouter = require('./login/login').router;
 const signupRouter = require('./login/signup').router;
 const forgetRouter = require('./login/forgetPassword').router;
 const logoutRouter = require('./login/logout').router;
-const addWatchlistRouter=require('./login/addwatchlist').router;
-const uploadAndStreamingRouter =require('./uploading_and_streaming/main').router;
+const addWatchlistRouter = require('./login/addwatchlist').router;
+const uploadAndStreamingRouter =
+	require('./uploading_and_streaming/main').router;
 // const { upload } = require('./test_upload/test');
 const express = require('express');
 const app = express();
 
 dotenv.config({ path: './.env' });
 
-const corsOptions ={
-	origin:["http://127.0.0.1:3000","https://filmfolio-git-temp2-dp-nothing.vercel.app"],
-    credentials:true,
-}
+const corsOptions = {
+	origin: [
+		'http://127.0.0.1:3000',
+		'https://filmfolio-git-temp2-dp-nothing.vercel.app',
+	],
+	credentials: true,
+};
 app.use(cors(corsOptions));
 
 app.set('trust proxy', 1); // trust first proxy
@@ -34,7 +37,7 @@ app.use(
 		cookie: {
 			secure: false, // This will only work if you have https enabled!
 			maxAge: 120000, // 1 min
-			// expires:new Date(Date.now()+3600000),	
+			// expires:new Date(Date.now()+3600000),
 		},
 	})
 );
@@ -45,7 +48,7 @@ app.use('/signup', signupRouter);
 app.use('/logout', logoutRouter);
 app.use('/upload', uploadAndStreamingRouter);
 app.use('/stream', uploadAndStreamingRouter);
-app.use('/addwatchlist',addWatchlistRouter);
+app.use('/addwatchlist', addWatchlistRouter);
 // verifying whether user is already logged in or not
 // app.use((req, res, next) => {
 // 	if (req.session.username) {
