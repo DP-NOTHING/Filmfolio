@@ -95,13 +95,26 @@ router
 		// console.log(req);
 		const uploadedId = req.file.id.toString();
 		const apiId = req.params['id'];
-		const old_mapping = await IdMapping.find({ apiId });
-		for (let oldMapping of old_mapping) {
-			await gfs.files.deleteOne({
-				_id: new mongoose.Types.ObjectId(oldMapping.uploadedId),
-			});
+		try {
+			const old_mapping = await IdMapping.find({ apiId });
+			for (let oldMapping of old_mapping) {
+				// await gridfsBucket.delete({
+				// 	_id: oldMapping.uploadedId,
+				// });
+				mongoose.connection.db.collection('media.files').deleteMany({
+					_id: new mongoose.Types.ObjectId(oldMapping.uploadedId),
+				});
+				mongoose.connection.db.collection('media.chunks').deleteMany({
+					files_id: new mongoose.Types.ObjectId(oldMapping.uploadedId),
+				});
+				// await gfs.collection('media.chunks').deleteMany({
+				// 	files_id: new mongoose.Types.ObjectId(oldMapping.uploadedId),
+				// });
+			}
+		} catch (e) {
+			console.log(e);
 		}
-		await IdMapping.deleteOne({ apiId });
+		await IdMapping.deleteMany({ apiId });
 		await IdMapping.insertMany([{ apiId, uploadedId }]);
 		return res.status(200).end('uploaded successfully');
 	});
