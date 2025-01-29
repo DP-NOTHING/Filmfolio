@@ -6,6 +6,18 @@ We used Multer and GridFS buckets to implement the uploading and streaming. We u
 data as streams, so only chunks of data are exchanged instead of the whole data, minimizing memory 
 consumption.
 
+## Required Env variables for backend: 
+
+```
+USERNAME = mongodb username
+PASSWORD = mongodb password
+CONNECTIONSTRING = mongodb connection string 
+PORT = 
+JWT_SECRET 
+```
+
+
+
 Preview:
 
  - Login
